@@ -1,0 +1,1709 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DPR Report Skin Studio</title>
+<style>
+  :root{
+    --ink:#1d1f23; --muted:#6b7280; --line:#e3e6ea; --bg:#f5f6f8; --card:#ffffff;
+    --brand:#33404d; --brand2:#b87333;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font:14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink)}
+  header.app{background:#20262e;color:#fff;padding:18px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+  header.app h1{font-size:18px;margin:0;letter-spacing:.02em}
+  header.app .sub{color:#a8b1bd;font-size:12.5px}
+  .wrap{max-width:1400px;margin:0 auto;padding:20px 24px 60px}
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin-bottom:20px}
+  .panel h2{font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:0 0 12px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px}
+  label{display:block;font-size:12px;color:var(--muted);margin-bottom:4px}
+  input,select,textarea{width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:6px;font:inherit;font-size:13px;background:#fff;color:var(--ink)}
+  textarea{min-height:120px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12px}
+  .btnrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;align-items:center}
+  button{cursor:pointer;border:1px solid transparent;border-radius:7px;padding:9px 16px;font:inherit;font-size:13px;font-weight:600}
+  .primary{background:#20262e;color:#fff}
+  .primary:hover{background:#2c3540}
+  .ghost{background:#fff;border-color:var(--line);color:var(--ink)}
+  .ghost:hover{border-color:#c3c9d1}
+  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:18px}
+  .card{background:#fff;border:1px solid var(--line);border-radius:10px;overflow:hidden;display:flex;flex-direction:column}
+  .card.sel{border-color:#20262e;box-shadow:0 0 0 2px #20262e22}
+  .card .meta{padding:10px 12px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:8px}
+  .card .meta .nm{font-weight:700;font-size:13px}
+  .card .meta .sd{font-size:11px;color:var(--muted);font-family:ui-monospace,Menlo,monospace}
+  .card .foot{padding:10px 12px;border-top:1px solid var(--line);display:flex;gap:8px;flex-wrap:wrap}
+  .card .foot button{padding:7px 12px;font-size:12px}
+  .swatches{display:flex;gap:4px;padding:8px 12px;border-bottom:1px solid var(--line)}
+  .sw{width:20px;height:20px;border-radius:4px;border:1px solid #00000014}
+  .tags{padding:8px 12px;font-size:11px;color:var(--muted);border-top:1px solid var(--line);line-height:1.7}
+  .tag{display:inline-block;background:#f0f2f5;border-radius:4px;padding:1px 7px;margin-right:4px}
+  /* page preview */
+  .pv{background:#fff;padding:14px;display:flex;justify-content:center}
+  .page{width:290px;min-height:400px;background:#fff;border:1px solid #dfe3e8;box-shadow:0 1px 4px #0000000d;padding:0;display:flex;flex-direction:column;font-size:7.4px;line-height:1.45;overflow:hidden}
+  .page .body{flex:1;padding:10px 14px}
+  .page p.tx{margin:6px 0;color:#3d434b;text-align:justify}
+  .page table.t{width:100%;border-collapse:collapse;font-size:6.6px;margin-top:8px}
+  .page table.t td,.page table.t th{padding:3px 4px;text-align:left}
+  .cap{font-size:6.2px;color:#7a8189;margin-top:4px;font-style:italic}
+  .hdrzone,.ftrzone{flex:none}
+  .note{font-size:12px;color:var(--muted);margin-top:8px}
+  .banner{background:#fff8e1;border:1px solid #f3e0a8;color:#6b5a1e;border-radius:8px;padding:10px 14px;font-size:12.5px;margin-bottom:18px}
+  details summary{cursor:pointer;font-size:12px;color:var(--muted);margin-top:8px}
+  .kv{font-size:12px;color:var(--muted)}
+  .lockrow{display:flex;gap:14px;flex-wrap:wrap;margin-top:10px;font-size:12px;color:var(--ink)}
+  .lockrow label{display:flex;align-items:center;gap:6px;color:var(--ink);margin:0;font-size:12px}
+  .lockrow input{width:auto}
+</style>
+</head>
+<body>
+<header class="app">
+  <h1>DPR Report Skin Studio</h1>
+  <span class="sub">Generates unique Word report designs &mdash; headers, palettes, tables, page numbers &mdash; with your DPR skeleton built in.</span>
+</header>
+<div class="wrap">
+  <div class="banner">Everything runs inside this file in your browser. Nothing is uploaded. Generated .docx files open in Word; press <b>Ctrl+A then F9</b> in Word once to build the table of contents.</div>
+
+  <div class="panel">
+    <h2>Project details</h2>
+    <div class="grid">
+      <div><label>Report title</label><input id="f_title" value="Detailed Project Report"></div>
+      <div><label>Project subtitle</label><input id="f_sub" value="Integrated Cold Chain and Food Processing Facility"></div>
+      <div><label>Applicant / company</label><input id="f_co" value="Applicant Company Private Limited"></div>
+      <div><label>Location</label><input id="f_loc" value="District, State"></div>
+      <div><label>Scheme</label><input id="f_scheme" value="Ministry of Food Processing Industries"></div>
+      <div><label>Prepared by</label><input id="f_by" value="Krishika Advisory Services"></div>
+      <div><label>Date line</label><input id="f_date" value=""></div>
+      <div><label>Short name for running header</label><input id="f_short" value="Cold Chain DPR"></div>
+    </div>
+    <details>
+      <summary>Chapter list (one per line, edit freely)</summary>
+      <textarea id="f_chapters">Project Summary
+Introduction
+Scheme Guidelines and Eligibility
+Promoter and Applicant Details
+Land and Location Details
+Market Scenario
+Cluster Analysis
+Proposed Technology
+Proposed Components and Civil Works
+Mass Flow and Throughput
+Business Plan and Marketing
+Project Cost and Means of Finance
+Financial Analysis
+Risk and Mitigation
+SWOT Analysis
+Conclusion</textarea>
+    </details>
+  </div>
+
+  <div class="panel">
+    <h2>Generation controls</h2>
+    <div class="grid">
+      <div><label>Number of designs</label><select id="f_n"><option>3</option><option selected>5</option><option>8</option><option>12</option></select></div>
+      <div><label>Palette family</label><select id="f_pal"></select></div>
+      <div><label>Header style</label><select id="f_hdr"></select></div>
+      <div><label>Table style</label><select id="f_tbl"></select></div>
+      <div><label>Heading style</label><select id="f_hd"></select></div>
+      <div><label>Page number style</label><select id="f_ftr"></select></div>
+      <div><label>Cover layout</label><select id="f_cov"></select></div>
+      <div><label>Typography</label><select id="f_typ"></select></div>
+      <div><label>Seed (blank = random)</label><input id="f_seed" placeholder="e.g. 74812"></div>
+    </div>
+    <div class="lockrow">
+      <label><input type="checkbox" id="f_boldmix" checked> Allow bold accent colours</label>
+      <label><input type="checkbox" id="f_border"> Add decorative page border</label>
+      <label><input type="checkbox" id="f_divider" checked> Chapter divider pages</label>
+    </div>
+    <div class="btnrow">
+      <button class="primary" id="btnGen">Generate designs</button>
+      <button class="ghost" id="btnMore">Add 5 more</button>
+      <button class="ghost" id="btnClear">Clear</button>
+      <span class="kv" id="status"></span>
+    </div>
+  </div>
+
+  <div id="cards" class="cards"></div>
+</div>
+
+<script>
+/* ============================================================
+   PART 1 — deterministic RNG, colour maths, ZIP writer, OOXML helpers
+   ============================================================ */
+
+/* ---------- seeded RNG ---------- */
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+function makeRng(seed){const r=mulberry32(seed);return{
+  next:r,
+  int:(n)=>Math.floor(r()*n),
+  pick:(arr)=>arr[Math.floor(r()*arr.length)],
+  range:(a,b)=>a+r()*(b-a),
+  chance:(p)=>r()<p
+}}
+
+/* ---------- colour ---------- */
+function hsl2hex(h,s,l){
+  h=((h%360)+360)%360; s=Math.max(0,Math.min(1,s)); l=Math.max(0,Math.min(1,l));
+  const c=(1-Math.abs(2*l-1))*s, x=c*(1-Math.abs((h/60)%2-1)), m=l-c/2;
+  let r,g,b;
+  if(h<60){r=c;g=x;b=0}else if(h<120){r=x;g=c;b=0}else if(h<180){r=0;g=c;b=x}
+  else if(h<240){r=0;g=x;b=c}else if(h<300){r=x;g=0;b=c}else{r=c;g=0;b=x}
+  const f=(v)=>Math.round((v+m)*255).toString(16).padStart(2,'0').toUpperCase();
+  return f(r)+f(g)+f(b);
+}
+function hex2rgb(h){h=h.replace('#','');return[parseInt(h.slice(0,2),16),parseInt(h.slice(2,4),16),parseInt(h.slice(4,6),16)]}
+function lum(hex){const[r,g,b]=hex2rgb(hex).map(v=>{v/=255;return v<=0.03928?v/12.92:Math.pow((v+0.055)/1.055,2.4)});return 0.2126*r+0.7152*g+0.0722*b}
+function contrast(a,b){const l1=lum(a),l2=lum(b);return(Math.max(l1,l2)+0.05)/(Math.min(l1,l2)+0.05)}
+function onColor(bg){return contrast(bg,'FFFFFF')>=4.0?'FFFFFF':'1A1A1A'}
+function mixHex(a,b,t){const A=hex2rgb(a),B=hex2rgb(b);return A.map((v,i)=>Math.round(v+(B[i]-v)*t).toString(16).padStart(2,'0').toUpperCase()).join('')}
+function tint(hex,t){return mixHex(hex,'FFFFFF',t)}
+function shade(hex,t){return mixHex(hex,'000000',t)}
+
+/* ---------- CRC32 + store-only ZIP ---------- */
+const CRC_TABLE=(function(){const t=new Uint32Array(256);for(let n=0;n<256;n++){let c=n;for(let k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t[n]=c>>>0}return t})();
+function crc32(buf){let c=0xFFFFFFFF;for(let i=0;i<buf.length;i++)c=CRC_TABLE[(c^buf[i])&0xFF]^(c>>>8);return(c^0xFFFFFFFF)>>>0}
+function strBytes(s){return new TextEncoder().encode(s)}
+function zipStore(files){
+  // files: [{name, data:Uint8Array}]
+  const chunks=[],central=[];let offset=0;
+  const dosTime=0x9B00, dosDate=0x5B21; // fixed timestamp
+  for(const f of files){
+    const nameB=strBytes(f.name), crc=crc32(f.data), size=f.data.length;
+    const lh=new Uint8Array(30+nameB.length); const dv=new DataView(lh.buffer);
+    dv.setUint32(0,0x04034b50,true); dv.setUint16(4,20,true); dv.setUint16(6,0,true);
+    dv.setUint16(8,0,true); dv.setUint16(10,dosTime,true); dv.setUint16(12,dosDate,true);
+    dv.setUint32(14,crc,true); dv.setUint32(18,size,true); dv.setUint32(22,size,true);
+    dv.setUint16(26,nameB.length,true); dv.setUint16(28,0,true);
+    lh.set(nameB,30);
+    chunks.push(lh,f.data);
+    const ch=new Uint8Array(46+nameB.length); const cv=new DataView(ch.buffer);
+    cv.setUint32(0,0x02014b50,true); cv.setUint16(4,20,true); cv.setUint16(6,20,true);
+    cv.setUint16(8,0,true); cv.setUint16(10,0,true); cv.setUint16(12,dosTime,true); cv.setUint16(14,dosDate,true);
+    cv.setUint32(16,crc,true); cv.setUint32(20,size,true); cv.setUint32(24,size,true);
+    cv.setUint16(28,nameB.length,true); cv.setUint16(30,0,true); cv.setUint16(32,0,true);
+    cv.setUint16(34,0,true); cv.setUint16(36,0,true); cv.setUint32(38,0,true); cv.setUint32(42,offset,true);
+    ch.set(nameB,46);
+    central.push(ch);
+    offset+=lh.length+size;
+  }
+  let cdSize=0; central.forEach(c=>cdSize+=c.length);
+  const end=new Uint8Array(22); const ev=new DataView(end.buffer);
+  ev.setUint32(0,0x06054b50,true); ev.setUint16(8,central.length,true); ev.setUint16(10,central.length,true);
+  ev.setUint32(12,cdSize,true); ev.setUint32(16,offset,true); ev.setUint16(20,0,true);
+  let total=offset+cdSize+22; const out=new Uint8Array(total); let p=0;
+  for(const c of chunks){out.set(c,p);p+=c.length}
+  for(const c of central){out.set(c,p);p+=c.length}
+  out.set(end,p);
+  return out;
+}
+
+/* ---------- OOXML helpers ---------- */
+function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+function rPr(o){
+  o=o||{};let x='<w:rPr>';
+  if(o.font)x+=`<w:rFonts w:ascii="${esc(o.font)}" w:hAnsi="${esc(o.font)}" w:cs="${esc(o.font)}"/>`;
+  if(o.b)x+='<w:b/>';
+  if(o.i)x+='<w:i/>';
+  if(o.caps)x+='<w:caps/>';
+  if(o.smallCaps)x+='<w:smallCaps/>';
+  if(o.strike)x+='<w:strike/>';
+  if(o.u)x+=`<w:u w:val="${o.u===true?'single':o.u}"/>`;
+  if(o.color)x+=`<w:color w:val="${o.color}"/>`;
+  if(o.spacing!=null)x+=`<w:spacing w:val="${o.spacing}"/>`;
+  if(o.sz)x+=`<w:sz w:val="${Math.round(o.sz*2)}"/><w:szCs w:val="${Math.round(o.sz*2)}"/>`;
+  if(o.shd)x+=`<w:shd w:val="clear" w:color="auto" w:fill="${o.shd}"/>`;
+  x+='</w:rPr>';return x;
+}
+function run(text,o){return `<w:r>${rPr(o)}<w:t xml:space="preserve">${esc(text)}</w:t></w:r>`}
+function brk(){return '<w:r><w:br/></w:r>'}
+function fld(instr,o){
+  return `<w:r>${rPr(o)}<w:fldChar w:fldCharType="begin"/></w:r>`+
+         `<w:r>${rPr(o)}<w:instrText xml:space="preserve"> ${esc(instr)} </w:instrText></w:r>`+
+         `<w:r>${rPr(o)}<w:fldChar w:fldCharType="separate"/></w:r>`+
+         `<w:r>${rPr(o)}<w:t>1</w:t></w:r>`+
+         `<w:r>${rPr(o)}<w:fldChar w:fldCharType="end"/></w:r>`;
+}
+function bdr(side,o){ // o:{sz(eighths of a point),color,val}
+  if(!o)return '';
+  return `<w:${side} w:val="${o.val||'single'}" w:sz="${o.sz||8}" w:space="${o.space||0}" w:color="${o.color||'auto'}"/>`;
+}
+function pBdr(b){
+  if(!b)return '';
+  let x='<w:pBdr>';
+  ['top','left','bottom','right','between'].forEach(s=>{if(b[s])x+=bdr(s,b[s])});
+  return x+'</w:pBdr>';
+}
+function pPr(o){
+  o=o||{};let x='<w:pPr>';
+  if(o.style)x+=`<w:pStyle w:val="${o.style}"/>`;
+  if(o.keepNext)x+='<w:keepNext/><w:keepLines/>';
+  if(o.pageBreakBefore)x+='<w:pageBreakBefore/>';
+  if(o.borders)x+=pBdr(o.borders);
+  if(o.shd)x+=`<w:shd w:val="clear" w:color="auto" w:fill="${o.shd}"/>`;
+  if(o.ind)x+=`<w:ind${o.ind.left!=null?` w:left="${o.ind.left}"`:''}${o.ind.right!=null?` w:right="${o.ind.right}"`:''}${o.ind.firstLine!=null?` w:firstLine="${o.ind.firstLine}"`:''}/>`;
+  const sp=o.spacing||{};
+  x+=`<w:spacing w:before="${sp.before!=null?sp.before:0}" w:after="${sp.after!=null?sp.after:0}"${sp.line?` w:line="${sp.line}" w:lineRule="auto"`:''}/>`;
+  if(o.align)x+=`<w:jc w:val="${o.align}"/>`;
+  if(o.rPr)x+=rPr(o.rPr);
+  x+='</w:pPr>';return x;
+}
+function para(content,o){return `<w:p>${pPr(o)}${content||''}</w:p>`}
+function txt(t,rp,o){return para(run(t,rp),o)}
+function empty(sz){return para('',{spacing:{after:0},rPr:{sz:sz||8}})}
+function tcBorders(b){
+  if(!b)return '';
+  let x='<w:tcBorders>';
+  ['top','left','bottom','right'].forEach(s=>{if(b[s])x+=bdr(s,b[s])});
+  return x+'</w:tcBorders>';
+}
+function cell(content,o){
+  o=o||{};
+  let p='<w:tcPr>';
+  if(o.w)p+=`<w:tcW w:w="${o.w}" w:type="${o.wType||'dxa'}"/>`;
+  else p+='<w:tcW w:w="0" w:type="auto"/>';
+  if(o.span)p+=`<w:gridSpan w:val="${o.span}"/>`;
+  if(o.borders)p+=tcBorders(o.borders);
+  if(o.shd)p+=`<w:shd w:val="clear" w:color="auto" w:fill="${o.shd}"/>`;
+  if(o.margins)p+=`<w:tcMar><w:top w:w="${o.margins.top||0}" w:type="dxa"/><w:left w:w="${o.margins.left||0}" w:type="dxa"/><w:bottom w:w="${o.margins.bottom||0}" w:type="dxa"/><w:right w:w="${o.margins.right||0}" w:type="dxa"/></w:tcMar>`;
+  if(o.valign)p+=`<w:vAlign w:val="${o.valign}"/>`;
+  p+='</w:tcPr>';
+  return `<w:tc>${p}${content||para('')}</w:tc>`;
+}
+function row(cells,o){
+  o=o||{};
+  let p='';
+  if(o.h||o.header){p='<w:trPr>';if(o.h)p+=`<w:trHeight w:val="${o.h}" w:hRule="${o.hRule||'atLeast'}"/>`;if(o.header)p+='<w:tblHeader/>';p+='</w:trPr>'}
+  return `<w:tr>${p}${cells.join('')}</w:tr>`;
+}
+function table(rows,o){
+  o=o||{};
+  let p='<w:tblPr>';
+  p+=`<w:tblW w:w="${o.w!=null?o.w:5000}" w:type="${o.wType||'pct'}"/>`;
+  if(o.align)p+=`<w:jc w:val="${o.align}"/>`;
+  if(o.layout)p+=`<w:tblLayout w:type="${o.layout}"/>`;
+  p+='<w:tblBorders>';
+  const B=o.borders||{};
+  ['top','left','bottom','right','insideH','insideV'].forEach(s=>{p+=bdr(s,B[s]||{val:'none',sz:0,color:'auto'})});
+  p+='</w:tblBorders>';
+  p+=`<w:tblCellMar><w:top w:w="${(o.cellMar&&o.cellMar.top)||40}" w:type="dxa"/><w:left w:w="${(o.cellMar&&o.cellMar.left)||90}" w:type="dxa"/><w:bottom w:w="${(o.cellMar&&o.cellMar.bottom)||40}" w:type="dxa"/><w:right w:w="${(o.cellMar&&o.cellMar.right)||90}" w:type="dxa"/></w:tblCellMar>`;
+  p+='</w:tblPr>';
+  let grid='<w:tblGrid>';
+  (o.grid||[]).forEach(g=>grid+=`<w:gridCol w:w="${g}"/>`);
+  grid+='</w:tblGrid>';
+  return `<w:tbl>${p}${grid}${rows.join('')}</w:tbl>`;
+}
+const NONE={val:'none',sz:0,color:'auto'};
+/* ============================================================
+   PART 2 — the design gene pool (EXPANDED)
+   ============================================================ */
+
+const CW = 9638; // content width in twips (A4, 2cm margins)
+
+/* ---------- palette families (25 families) ---------- */
+const PALETTE_FAMILIES = [
+  {id:'monogrey',   label:'Minimal mono grey and accent',   base:[210,215,205], sat:[0.04,0.10], light:[0.20,0.26], acc:[[350,0.60,0.36],[186,0.70,0.28],[42,0.72,0.42],[16,0.65,0.42]]},
+  {id:'maroongold', label:'Maroon and gold',                base:[352,358,346], sat:[0.55,0.72], light:[0.26,0.33], acc:[[42,0.68,0.44],[36,0.60,0.40]]},
+  {id:'teal',       label:'Deep teal',                      base:[182,192,174], sat:[0.55,0.78], light:[0.22,0.29], acc:[[40,0.72,0.46],[8,0.62,0.44]]},
+  {id:'navy',       label:'Corporate navy',                 base:[212,222,204], sat:[0.50,0.72], light:[0.24,0.31], acc:[[8,0.66,0.46],[196,0.62,0.44],[38,0.70,0.46]]},
+  {id:'forest',     label:'Forest and olive',               base:[142,152,96],  sat:[0.42,0.60], light:[0.22,0.29], acc:[[38,0.65,0.42],[76,0.50,0.34]]},
+  {id:'plum',       label:'Plum and rose',                  base:[292,304,318], sat:[0.42,0.60], light:[0.23,0.30], acc:[[334,0.52,0.46],[26,0.60,0.46]]},
+  {id:'rust',       label:'Rust and sand',                  base:[16,22,10],    sat:[0.55,0.72], light:[0.28,0.34], acc:[[38,0.68,0.46],[196,0.42,0.36]]},
+  {id:'slate',      label:'Slate and copper',               base:[206,214,198], sat:[0.18,0.30], light:[0.24,0.30], acc:[[24,0.55,0.44],[168,0.44,0.34]]},
+  {id:'indigo',     label:'Indigo and amber',               base:[238,248,230], sat:[0.48,0.66], light:[0.26,0.33], acc:[[40,0.82,0.50],[338,0.56,0.48]]},
+  {id:'crimson',    label:'Charcoal and crimson',           base:[0,6,352],     sat:[0.06,0.14], light:[0.16,0.22], acc:[[352,0.72,0.42],[6,0.70,0.44]]},
+  {id:'ochre',      label:'Ochre and charcoal',             base:[36,42,32],    sat:[0.55,0.72], light:[0.32,0.40], acc:[[212,0.30,0.24],[10,0.55,0.42]]},
+  {id:'sage',       label:'Sage and moss',                  base:[92,110,82],   sat:[0.20,0.34], light:[0.28,0.36], acc:[[26,0.60,0.42],[190,0.30,0.32]]},
+  {id:'burgundy',   label:'Burgundy and cream',             base:[344,352,338], sat:[0.60,0.78], light:[0.20,0.28], acc:[[38,0.72,0.48],[16,0.55,0.42]]},
+  {id:'steel',      label:'Steel blue and rust',            base:[204,214,196], sat:[0.28,0.42], light:[0.30,0.38], acc:[[18,0.65,0.46],[42,0.60,0.44]]},
+  {id:'coral',      label:'Coral and denim',                base:[8,14,354],    sat:[0.55,0.72], light:[0.34,0.42], acc:[[212,0.55,0.34],[188,0.40,0.36]]},
+  {id:'emerald',    label:'Emerald and gold',               base:[152,164,138], sat:[0.55,0.72], light:[0.22,0.30], acc:[[42,0.75,0.48],[8,0.55,0.40]]},
+  {id:'midnight',   label:'Midnight and citrus',            base:[228,238,220], sat:[0.55,0.72], light:[0.14,0.20], acc:[[52,0.85,0.52],[168,0.55,0.38]]},
+  {id:'terracotta', label:'Terracotta and taupe',           base:[14,20,8],     sat:[0.42,0.60], light:[0.36,0.44], acc:[[36,0.30,0.28],[188,0.28,0.34]]},
+  {id:'graphite',   label:'Graphite and lime',              base:[210,220,200], sat:[0.06,0.14], light:[0.14,0.20], acc:[[76,0.75,0.44],[196,0.55,0.42]]},
+  {id:'moss',       label:'Moss and mustard',               base:[68,78,58],    sat:[0.36,0.52], light:[0.24,0.32], acc:[[42,0.72,0.44],[16,0.55,0.42]]},
+  {id:'oxblood',    label:'Oxblood and stone',              base:[356,4,348],   sat:[0.60,0.78], light:[0.18,0.24], acc:[[36,0.30,0.32],[76,0.28,0.32]]},
+  {id:'pine',       label:'Pine and camel',                 base:[162,172,152], sat:[0.55,0.72], light:[0.18,0.26], acc:[[34,0.55,0.42],[16,0.42,0.38]]},
+  {id:'lavender',   label:'Lavender slate and peach',       base:[248,258,238], sat:[0.24,0.40], light:[0.36,0.44], acc:[[18,0.62,0.48],[42,0.60,0.48]]},
+  {id:'sandstone',  label:'Sandstone and slate',            base:[32,40,26],    sat:[0.32,0.48], light:[0.42,0.50], acc:[[212,0.36,0.28],[8,0.42,0.38]]},
+  {id:'onyx',       label:'Onyx and coral',                 base:[220,232,208], sat:[0.10,0.18], light:[0.10,0.16], acc:[[8,0.72,0.48],[42,0.72,0.48]]}
+];
+
+function buildPalette(rng, familyId, boldAccent){
+  const fam = familyId && familyId!=='auto'
+    ? PALETTE_FAMILIES.find(f=>f.id===familyId)
+    : rng.pick(PALETTE_FAMILIES);
+  const h = fam.base[rng.int(fam.base.length)] + rng.range(-4,4);
+  const s = rng.range(fam.sat[0], fam.sat[1]);
+  const l = rng.range(fam.light[0], fam.light[1]);
+  const primary = hsl2hex(h,s,l);
+  const dark    = hsl2hex(h, Math.min(s+0.05,0.9), Math.max(l-0.09,0.10));
+  const a = fam.acc[rng.int(fam.acc.length)];
+  const accent  = hsl2hex(a[0]+rng.range(-5,5), boldAccent? a[1] : a[1]*0.75, a[2]);
+  const accent2 = hsl2hex((a[0]+180+rng.range(-20,20))%360, a[1]*0.6, Math.min(a[2]+0.10,0.68));
+  const pal = {
+    family: fam.id, familyLabel: fam.label,
+    primary, dark, accent, accent2,
+    soft:      tint(primary,0.86),
+    softer:    tint(primary,0.94),
+    softest:   tint(primary,0.97),
+    accentSoft:tint(accent,0.86),
+    accent2Soft:tint(accent2,0.86),
+    rule:      tint(primary,0.62),
+    ruleDk:    tint(primary,0.40),
+    ink:       '1F2328',
+    muted:     '5A6169',
+    paper:     'FFFFFF'
+  };
+  pal.onPrimary = onColor(pal.primary);
+  pal.onDark    = onColor(pal.dark);
+  pal.onAccent  = onColor(pal.accent);
+  pal.onAccent2 = onColor(pal.accent2);
+  return pal;
+}
+
+/* ---------- typography pairs (safe fonts only) ---------- */
+const TYPE_PAIRS = [
+  {id:'calibri',    label:'Calibri throughout',           head:'Calibri',         body:'Calibri',          hSz:15, bSz:10.5},
+  {id:'cambria',    label:'Cambria head, Calibri body',   head:'Cambria',         body:'Calibri',          hSz:15, bSz:10.5},
+  {id:'georgia',    label:'Georgia head, Arial body',     head:'Georgia',         body:'Arial',            hSz:14.5,bSz:10},
+  {id:'arial',      label:'Arial throughout',             head:'Arial',           body:'Arial',            hSz:14, bSz:10},
+  {id:'times',      label:'Times New Roman classic',      head:'Times New Roman', body:'Times New Roman',  hSz:15, bSz:11},
+  {id:'trebuchet',  label:'Trebuchet head, Calibri body', head:'Trebuchet MS',    body:'Calibri',          hSz:14.5,bSz:10.5},
+  {id:'garamond',   label:'Garamond head, Calibri body',  head:'Garamond',        body:'Calibri',          hSz:16, bSz:11},
+  {id:'verdana',    label:'Verdana head, Georgia body',   head:'Verdana',         body:'Georgia',          hSz:13.5,bSz:10},
+  {id:'timescal',   label:'Times head, Calibri body',     head:'Times New Roman', body:'Calibri',          hSz:15.5,bSz:10.5},
+  {id:'bookant',    label:'Book Antiqua head, Calibri',   head:'Book Antiqua',    body:'Calibri',          hSz:15, bSz:10.5},
+  {id:'palatino',   label:'Palatino head, Verdana body',  head:'Palatino Linotype',body:'Verdana',         hSz:15, bSz:10},
+  {id:'lucida',     label:'Lucida Sans head, Cambria',    head:'Lucida Sans Unicode',body:'Cambria',       hSz:14, bSz:10.5},
+  {id:'century',    label:'Century Gothic head, Calibri', head:'Century Gothic',  body:'Calibri',          hSz:14, bSz:10.5},
+  {id:'tahoma',     label:'Tahoma head, Georgia body',    head:'Tahoma',          body:'Georgia',          hSz:13.5,bSz:10.5},
+  {id:'georgeorge', label:'Georgia throughout',           head:'Georgia',         body:'Georgia',          hSz:14.5,bSz:10.5},
+  {id:'segoe',      label:'Segoe UI head, Calibri body',  head:'Segoe UI',        body:'Calibri',          hSz:14, bSz:10.5}
+];
+
+/* ---------- gene catalogues ---------- */
+const HEADER_STYLES = [
+  /* rectilinear */
+  {id:'fullband',    label:'Full colour band'},
+  {id:'splitband',   label:'Split band with accent tab'},
+  {id:'rulehead',    label:'Text over heavy rule'},
+  {id:'cornerblock', label:'Corner block and hairline'},
+  {id:'doublerule',  label:'Double hairline rules'},
+  {id:'lefttab',     label:'Left tab on tinted band'},
+  {id:'stackline',   label:'Two line stack with side bar'},
+  {id:'reversetab',  label:'Tinted band, dark right tab'},
+  {id:'edgeblocks',  label:'Three edge blocks'},
+  {id:'thinband',    label:'Thin band over title line'},
+  /* new shape-driven */
+  {id:'chevronleft', label:'Chevron block on the left'},
+  {id:'angledcut',   label:'Angled parallelogram band'},
+  {id:'triangleflag',label:'Corner triangle flag'},
+  {id:'notchedband', label:'Notched full band'},
+  {id:'ribbontab',   label:'Ribbon tab and rule'},
+  {id:'arcband',     label:'Curved arc band'},
+  {id:'hexmark',     label:'Hexagon marker and rule'},
+  {id:'steppedblocks',label:'Stepped offset blocks'},
+  {id:'arrowtab',    label:'Right arrow tab'},
+  {id:'diamondstrip',label:'Diamond markers strip'},
+  {id:'dotgrid',     label:'Dot pattern with title'},
+  {id:'twinbars',    label:'Twin vertical bars'}
+];
+const FOOTER_STYLES = [
+  {id:'tilde',       label:'Centred tilde numerals'},
+  {id:'pill',        label:'Filled pill badge'},
+  {id:'ruleright',   label:'Hairline with right numeral'},
+  {id:'boxed',       label:'Outlined box numeral'},
+  {id:'pageofn',     label:'Page X of Y, small caps'},
+  {id:'lefttab',     label:'Left colour block numeral'},
+  {id:'bandftr',     label:'Full width footer band'},
+  {id:'dotrule',     label:'Dotted rule and centre numeral'},
+  {id:'chevronpg',   label:'Chevron shape around number'},
+  {id:'trianglepg',  label:'Triangle bracket numeral'},
+  {id:'hexpg',       label:'Hexagon badge numeral'},
+  {id:'arcpg',       label:'Arc under numeral'},
+  {id:'diamondpg',   label:'Diamond flanked numeral'}
+];
+const HEADING_STYLES = [
+  {id:'reverseband', label:'Reversed colour band'},
+  {id:'leftbar',     label:'Thick left bar'},
+  {id:'underline',   label:'Heavy underline'},
+  {id:'chip',        label:'Numbered chip and title'},
+  {id:'capsrule',    label:'Letterspaced caps over rule'},
+  {id:'splittone',   label:'Two tone number and title'},
+  {id:'shadedlight', label:'Light tint with accent edge'},
+  {id:'bandright',   label:'Dark band with accent end block'},
+  /* new shape-driven */
+  {id:'arrowtab',    label:'Arrow tab number, title band'},
+  {id:'cutcorner',   label:'Cut corner trapezoid'},
+  {id:'chevronstart',label:'Chevron before title'},
+  {id:'trianglemk',  label:'Triangle marker and rule'},
+  {id:'hextab',      label:'Hexagon number tab'},
+  {id:'circletab',   label:'Circle number and title'},
+  {id:'notchedbg',   label:'Notched dark background'},
+  {id:'ribbonleft',  label:'Ribbon left of title'}
+];
+const TABLE_STYLES = [
+  {id:'bandzebra',   label:'Colour header with zebra rows'},
+  {id:'hairline',    label:'Hairline minimal, no verticals'},
+  {id:'boxed',       label:'Full grid, dark header'},
+  {id:'accentlite',  label:'Accent header on white'},
+  {id:'firstcol',    label:'Shaded first column'},
+  {id:'doublerule',  label:'Double rule under header'},
+  {id:'softgrid',    label:'Soft tinted grid'},
+  {id:'heavyfirst',  label:'Heavy first row and column'},
+  {id:'colstripe',   label:'Alternating column stripes'},
+  {id:'dottedgrid',  label:'Dotted rule grid'},
+  {id:'toponly',     label:'Top and bottom rule only'},
+  {id:'sideband',    label:'Coloured side band header'}
+];
+const COVER_STYLES = [
+  {id:'topblock',    label:'Top colour block'},
+  {id:'sidebar',     label:'Full height side bar'},
+  {id:'centrerule',  label:'Centred title between rules'},
+  {id:'bottomband',  label:'White top, deep bottom band'},
+  {id:'stackbands',  label:'Stacked two tone bands'},
+  {id:'framed',      label:'Framed panel on tint'},
+  /* new geometric */
+  {id:'diagonalsplit',label:'Diagonal split composition'},
+  {id:'triangleburst',label:'Corner triangle burst'},
+  {id:'geopattern',  label:'Geometric shape composition'},
+  {id:'arcbottom',   label:'Bottom arc band'},
+  {id:'halfcircle',  label:'Side half circle accent'},
+  {id:'chevronstack',label:'Chevron stack composition'},
+  {id:'twotone',     label:'Two tone diagonal'},
+  {id:'hexcluster',  label:'Hexagon cluster accent'}
+];
+
+/* ---------- compose one skin ---------- */
+const ADJ=['Meridian','Anchor','Basalt','Cobalt','Foundry','Harbour','Lattice','Monsoon','Obsidian','Quarry','Ridge','Sable','Terra','Vantage','Wren','Aster','Beacon','Cedar','Delta','Ember','Halcyon','Ivory','Juniper','Kestrel','Larkspur','Marlow','Nimbus','Onyx','Pinnacle','Quill'];
+const NOUN=['Ledger','Folio','Report','Dossier','Brief','Record','Compendium','Register','Sheet','Codex','Chronicle','Digest','Journal','Manuscript','Prospectus','Volume','Almanac','Bulletin'];
+
+function makeSkin(opts){
+  const seed = opts.seed;
+  const rng = makeRng(seed);
+  const pal = buildPalette(rng, opts.palette, opts.boldAccent);
+  const pickGene=(list, forced)=> (forced && forced!=='auto') ? list.find(x=>x.id===forced) : rng.pick(list);
+  const typ = pickGene(TYPE_PAIRS, opts.type);
+  const skin = {
+    seed,
+    name: ADJ[seed%ADJ.length] + ' ' + NOUN[Math.floor(seed/8)%NOUN.length],
+    pal, typ,
+    header:  pickGene(HEADER_STYLES,  opts.header).id,
+    footer:  pickGene(FOOTER_STYLES,  opts.footer).id,
+    heading: pickGene(HEADING_STYLES, opts.heading).id,
+    tableSt: pickGene(TABLE_STYLES,   opts.table).id,
+    cover:   pickGene(COVER_STYLES,   opts.cover).id,
+    caps:    rng.chance(0.55),
+    spaced:  rng.chance(0.45),
+    pageBorder: !!opts.pageBorder,
+    dividers:   !!opts.dividers
+  };
+  skin.labels = {
+    header:  HEADER_STYLES.find(x=>x.id===skin.header).label,
+    footer:  FOOTER_STYLES.find(x=>x.id===skin.footer).label,
+    heading: HEADING_STYLES.find(x=>x.id===skin.heading).label,
+    table:   TABLE_STYLES.find(x=>x.id===skin.tableSt).label,
+    cover:   COVER_STYLES.find(x=>x.id===skin.cover).label,
+    type:    typ.label,
+    palette: pal.familyLabel
+  };
+  return skin;
+}
+
+/* ============================================================
+   HTML PREVIEW RENDERERS (approximate the Word output)
+   ============================================================ */
+function escapeHtml(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+
+function pvHeader(s,d){
+  const p=s.pal, f=s.typ.head;
+  const t=`<span style="font-family:${f};font-weight:700;letter-spacing:${s.spaced?'.06em':'0'}">${escapeHtml(d.short)}</span>`;
+  const r=`<span style="font-family:${f};font-size:6.4px;opacity:.85">${escapeHtml(d.co)}</span>`;
+  switch(s.header){
+    case 'fullband': return `<div style="background:#${p.primary};color:#${p.onPrimary};padding:6px 12px;display:flex;justify-content:space-between;align-items:center">${t}${r}</div><div style="height:3px;background:#${p.accent}"></div>`;
+    case 'splitband': return `<div style="display:flex"><div style="flex:1;background:#${p.primary};color:#${p.onPrimary};padding:6px 12px">${t}</div><div style="width:70px;background:#${p.accent};color:#${p.onAccent};padding:6px 8px;text-align:center;font-size:6.4px">${escapeHtml((d.scheme||'').split(' ')[0])}</div></div>`;
+    case 'rulehead': return `<div style="padding:8px 12px 3px;display:flex;justify-content:space-between;color:#${p.primary}">${t}${r}</div><div style="height:3px;background:#${p.primary};margin:0 12px"></div><div style="height:1px;background:#${p.accent};margin:1.5px 12px 0"></div>`;
+    case 'cornerblock': return `<div style="display:flex;align-items:center;gap:8px;padding:7px 12px"><div style="width:12px;height:12px;background:#${p.accent}"></div><div style="flex:1;color:#${p.primary}">${t}</div>${r}</div><div style="height:1px;background:#${p.rule};margin:0 12px"></div>`;
+    case 'doublerule': return `<div style="margin:8px 12px 0;height:1px;background:#${p.primary}"></div><div style="padding:3px 12px;text-align:center;color:#${p.primary};font-size:6.4px;letter-spacing:.12em;text-transform:uppercase;font-family:${f}">${escapeHtml(d.short)}</div><div style="margin:0 12px;height:2px;background:#${p.primary}"></div>`;
+    case 'lefttab': return `<div style="display:flex;background:#${p.soft}"><div style="background:#${p.primary};color:#${p.onPrimary};padding:6px 10px;font-size:6.4px;font-family:${f};font-weight:700">DPR</div><div style="flex:1;padding:6px 10px;color:#${p.dark}">${t}</div></div>`;
+    case 'stackline': return `<div style="display:flex;gap:8px;padding:6px 12px"><div style="width:3px;background:#${p.accent}"></div><div style="flex:1"><div style="color:#${p.primary}">${t}</div><div style="font-size:6.2px;color:#${p.muted}">${escapeHtml(d.scheme)}</div></div></div><div style="height:1px;background:#${p.rule};margin:0 12px"></div>`;
+    case 'reversetab': return `<div style="display:flex;background:#${p.softer}"><div style="flex:1;padding:6px 12px;color:#${p.dark}">${t}</div><div style="background:#${p.dark};color:#${p.onDark};padding:6px 10px;font-size:6.4px">${escapeHtml(d.loc)}</div></div><div style="height:2px;background:#${p.accent}"></div>`;
+    case 'edgeblocks': return `<div style="display:flex;align-items:stretch"><div style="width:26px;background:#${p.primary}"></div><div style="width:8px;background:#${p.accent}"></div><div style="flex:1;padding:6px 10px;color:#${p.dark}">${t}</div><div style="width:26px;background:#${p.soft}"></div></div><div style="height:1px;background:#${p.rule}"></div>`;
+    case 'thinband': return `<div style="height:5px;background:#${p.primary}"></div><div style="padding:5px 12px;display:flex;justify-content:space-between;color:#${p.dark}">${t}${r}</div><div style="height:1px;background:#${p.rule};margin:0 12px"></div>`;
+    case 'chevronleft': return `<div style="display:flex;align-items:stretch;background:#${p.softer}"><div style="width:60px;background:#${p.primary};clip-path:polygon(0 0,100% 0,80% 100%,0 100%);color:#${p.onPrimary};padding:6px 6px 6px 8px;font-size:6.2px;font-weight:700;font-family:${f}">DPR</div><div style="flex:1;padding:6px 10px 6px 14px;color:#${p.dark}">${t}</div><div style="padding:6px 10px;color:#${p.muted};font-size:6.2px">${escapeHtml(d.co)}</div></div><div style="height:2px;background:#${p.accent}"></div>`;
+    case 'angledcut': return `<div style="position:relative;background:#${p.primary};height:24px;clip-path:polygon(0 0,100% 0,100% 100%,4% 100%)"><div style="position:absolute;inset:0;padding:5px 14px;color:#${p.onPrimary};display:flex;justify-content:space-between;align-items:center">${t}${r}</div></div>`;
+    case 'triangleflag': return `<div style="position:relative;height:28px;background:#${p.softer}"><div style="position:absolute;left:0;top:0;width:34px;height:28px;background:#${p.accent};clip-path:polygon(0 0,100% 0,0 100%)"></div><div style="position:absolute;inset:0;padding:6px 12px 6px 42px;display:flex;justify-content:space-between;align-items:center;color:#${p.dark}">${t}${r}</div></div><div style="height:1px;background:#${p.rule};margin:0 12px"></div>`;
+    case 'notchedband': return `<div style="background:#${p.primary};color:#${p.onPrimary};padding:6px 12px;display:flex;justify-content:space-between;clip-path:polygon(0 0,45% 0,48% 100%,55% 100%,58% 0,100% 0,100% 100%,0 100%)">${t}${r}</div>`;
+    case 'ribbontab': return `<div style="display:flex;align-items:stretch"><div style="background:#${p.accent};color:#${p.onAccent};padding:5px 12px 5px 8px;font-weight:700;font-family:${f};clip-path:polygon(0 0,100% 0,90% 50%,100% 100%,0 100%)">${escapeHtml((d.scheme||'DPR').split(' ')[0])}</div><div style="flex:1;padding:5px 12px;color:#${p.dark}">${t}</div></div><div style="height:2px;background:#${p.primary};margin:0 12px"></div>`;
+    case 'arcband': return `<div style="position:relative;background:#${p.primary};padding:8px 12px;color:#${p.onPrimary};display:flex;justify-content:space-between;border-radius:0 0 32px 0">${t}${r}</div>`;
+    case 'hexmark': return `<div style="display:flex;align-items:center;gap:10px;padding:6px 12px"><div style="width:16px;height:18px;background:#${p.accent};clip-path:polygon(25% 0,75% 0,100% 50%,75% 100%,25% 100%,0 50%)"></div><div style="flex:1;color:#${p.primary}">${t}</div>${r}</div><div style="height:1px;background:#${p.rule};margin:0 12px"></div>`;
+    case 'steppedblocks': return `<div style="display:flex;align-items:stretch;background:#${p.softest}"><div style="width:8px;background:#${p.dark}"></div><div style="width:6px;background:#${p.accent}"></div><div style="width:14px"></div><div style="flex:1;padding:6px 10px;color:#${p.dark}">${t}</div><div style="padding:6px 10px;color:#${p.muted};font-size:6.2px">${escapeHtml(d.co)}</div></div>`;
+    case 'arrowtab': return `<div style="display:flex;align-items:stretch;background:#${p.softest}"><div style="background:#${p.primary};color:#${p.onPrimary};padding:6px 16px 6px 10px;font-weight:700;clip-path:polygon(0 0,85% 0,100% 50%,85% 100%,0 100%);font-family:${f};font-size:6.2px">DPR</div><div style="flex:1;padding:6px 10px 6px 14px;color:#${p.dark}">${t}</div></div>`;
+    case 'diamondstrip': {
+      let dots=''; for(let i=0;i<6;i++) dots+=`<span style="width:6px;height:6px;background:#${i%2?p.accent:p.primary};transform:rotate(45deg);display:inline-block;margin:0 3px"></span>`;
+      return `<div style="padding:5px 12px;display:flex;justify-content:space-between;align-items:center;color:#${p.dark}">${t}<span>${dots}</span></div><div style="height:1px;background:#${p.rule};margin:0 12px"></div>`;
+    }
+    case 'dotgrid': {
+      let dots=''; for(let i=0;i<12;i++) dots+=`<span style="width:3px;height:3px;background:#${p.accent};border-radius:50%;display:inline-block;margin:0 2px"></span>`;
+      return `<div style="padding:6px 12px;display:flex;justify-content:space-between;align-items:center;color:#${p.primary}">${t}<span>${dots}</span></div><div style="height:2px;background:#${p.primary};margin:0 12px"></div>`;
+    }
+    case 'twinbars': return `<div style="display:flex;align-items:stretch"><div style="width:4px;background:#${p.primary}"></div><div style="width:4px;background:#${p.accent};margin-left:2px"></div><div style="flex:1;padding:6px 10px 6px 12px;color:#${p.dark};display:flex;justify-content:space-between">${t}${r}</div></div><div style="height:1px;background:#${p.rule};margin:0 12px"></div>`;
+    default: return `<div style="background:#${p.primary};color:#${p.onPrimary};padding:6px 12px">${t}</div>`;
+  }
+}
+
+function pvFooter(s){
+  const p=s.pal,f=s.typ.body;
+  switch(s.footer){
+    case 'tilde': return `<div style="text-align:center;padding:7px;color:#${p.primary};font-family:${f}">~ 5 ~</div>`;
+    case 'pill': return `<div style="display:flex;justify-content:center;padding:7px"><span style="background:#${p.primary};color:#${p.onPrimary};padding:2px 9px;border-radius:8px;font-family:${f}">5</span></div>`;
+    case 'ruleright': return `<div style="margin:0 12px;height:1px;background:#${p.rule}"></div><div style="text-align:right;padding:4px 12px;color:#${p.primary};font-family:${f}">05</div>`;
+    case 'boxed': return `<div style="display:flex;justify-content:center;padding:6px"><span style="border:1px solid #${p.primary};color:#${p.primary};padding:2px 8px;font-family:${f}">5</span></div>`;
+    case 'pageofn': return `<div style="margin:0 12px;height:1px;background:#${p.rule}"></div><div style="text-align:center;padding:4px;color:#${p.muted};font-size:6.2px;letter-spacing:.1em;text-transform:uppercase;font-family:${f}">Page 5 of 62</div>`;
+    case 'lefttab': return `<div style="display:flex;align-items:center;padding:6px 12px;gap:8px"><span style="background:#${p.accent};color:#${p.onAccent};padding:2px 7px;font-family:${f}">5</span><span style="flex:1;height:1px;background:#${p.rule}"></span></div>`;
+    case 'bandftr': return `<div style="background:#${p.primary};color:#${p.onPrimary};text-align:center;padding:5px;font-family:${f}">5</div>`;
+    case 'dotrule': return `<div style="margin:0 12px;border-top:1px dotted #${p.rule}"></div><div style="text-align:center;padding:4px;color:#${p.primary};font-family:${f}">5</div>`;
+    case 'chevronpg': return `<div style="display:flex;justify-content:center;padding:5px"><span style="background:#${p.primary};color:#${p.onPrimary};padding:2px 12px 2px 8px;clip-path:polygon(0 0,88% 0,100% 50%,88% 100%,0 100%);font-family:${f}">5</span></div>`;
+    case 'trianglepg': return `<div style="display:flex;justify-content:center;align-items:center;gap:6px;padding:5px"><span style="width:0;height:0;border-top:5px solid transparent;border-bottom:5px solid transparent;border-right:6px solid #${p.accent}"></span><span style="color:#${p.primary};font-family:${f}">5</span><span style="width:0;height:0;border-top:5px solid transparent;border-bottom:5px solid transparent;border-left:6px solid #${p.accent}"></span></div>`;
+    case 'hexpg': return `<div style="display:flex;justify-content:center;padding:4px"><span style="background:#${p.primary};color:#${p.onPrimary};padding:3px 10px;clip-path:polygon(20% 0,80% 0,100% 50%,80% 100%,20% 100%,0 50%);font-family:${f}">5</span></div>`;
+    case 'arcpg': return `<div style="text-align:center;padding:4px;color:#${p.primary};font-family:${f}">5</div><div style="height:6px;background:#${p.accent};border-radius:0 0 30px 30px;margin:0 30%"></div>`;
+    case 'diamondpg': return `<div style="display:flex;justify-content:center;align-items:center;gap:8px;padding:5px"><span style="width:6px;height:6px;background:#${p.accent};transform:rotate(45deg)"></span><span style="color:#${p.primary};font-family:${f}">5</span><span style="width:6px;height:6px;background:#${p.accent};transform:rotate(45deg)"></span></div>`;
+    default: return `<div style="text-align:center;padding:5px">5</div>`;
+  }
+}
+
+function pvHeading(s,n,t){
+  const p=s.pal,f=s.typ.head;
+  const base=`font-family:${f};font-weight:700;font-size:9px;${s.caps?'text-transform:uppercase;':''}${s.spaced?'letter-spacing:.05em;':''}`;
+  switch(s.heading){
+    case 'reverseband': return `<div style="background:#${p.primary};color:#${p.onPrimary};padding:5px 8px;${base}">${n}. ${t}</div>`;
+    case 'leftbar': return `<div style="border-left:4px solid #${p.accent};padding:3px 0 3px 8px;color:#${p.dark};${base}">${n}. ${t}</div>`;
+    case 'underline': return `<div style="border-bottom:3px solid #${p.primary};padding-bottom:3px;color:#${p.dark};${base}">${n}. ${t}</div>`;
+    case 'chip': return `<div style="display:flex"><div style="background:#${p.accent};color:#${p.onAccent};padding:5px 9px;${base}">${n}</div><div style="flex:1;background:#${p.soft};color:#${p.dark};padding:5px 9px;${base}">${t}</div></div>`;
+    case 'capsrule': return `<div style="color:#${p.primary};font-family:${f};font-weight:700;font-size:8.4px;letter-spacing:.14em;text-transform:uppercase">${n}. ${t}</div><div style="height:1px;background:#${p.rule};margin-top:3px"></div>`;
+    case 'splittone': return `<div style="${base}"><span style="color:#${p.accent}">${n}.</span> <span style="color:#${p.dark}">${t}</span></div><div style="height:2px;width:38px;background:#${p.accent};margin-top:3px"></div>`;
+    case 'shadedlight': return `<div style="background:#${p.soft};border-left:4px solid #${p.primary};color:#${p.dark};padding:5px 8px;${base}">${n}. ${t}</div>`;
+    case 'bandright': return `<div style="display:flex"><div style="flex:1;background:#${p.dark};color:#${p.onDark};padding:5px 8px;${base}">${n}. ${t}</div><div style="width:16px;background:#${p.accent}"></div></div>`;
+    case 'arrowtab': return `<div style="display:flex;align-items:stretch"><div style="background:#${p.primary};color:#${p.onPrimary};padding:5px 12px 5px 8px;clip-path:polygon(0 0,80% 0,100% 50%,80% 100%,0 100%);${base}">${n}</div><div style="flex:1;background:#${p.softer};color:#${p.dark};padding:5px 12px;${base}">${t}</div></div>`;
+    case 'cutcorner': return `<div style="background:#${p.primary};color:#${p.onPrimary};padding:5px 8px;clip-path:polygon(0 0,100% 0,100% 60%,96% 100%,0 100%);${base}">${n}. ${t}</div>`;
+    case 'chevronstart': return `<div style="display:flex;align-items:center;gap:8px;color:#${p.dark};${base}"><span style="color:#${p.accent};font-size:12px">›</span>${n}. ${t}</div><div style="height:1px;background:#${p.rule};margin-top:3px"></div>`;
+    case 'trianglemk': return `<div style="display:flex;align-items:center;gap:8px;color:#${p.dark};${base}"><span style="width:0;height:0;border-top:6px solid transparent;border-bottom:6px solid transparent;border-left:7px solid #${p.accent}"></span>${n}. ${t}</div><div style="height:1px;background:#${p.rule};margin-top:3px"></div>`;
+    case 'hextab': return `<div style="display:flex;align-items:stretch"><div style="background:#${p.accent};color:#${p.onAccent};padding:5px 12px;clip-path:polygon(15% 0,85% 0,100% 50%,85% 100%,15% 100%,0 50%);${base}">${n}</div><div style="flex:1;padding:5px 12px;color:#${p.dark};${base}">${t}</div></div>`;
+    case 'circletab': return `<div style="display:flex;align-items:center;gap:8px"><span style="width:20px;height:20px;background:#${p.primary};color:#${p.onPrimary};border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-family:${f};font-weight:700;font-size:8.5px">${n}</span><span style="color:#${p.dark};${base}">${t}</span></div><div style="height:1px;background:#${p.rule};margin-top:3px"></div>`;
+    case 'notchedbg': return `<div style="background:#${p.dark};color:#${p.onDark};padding:5px 8px;clip-path:polygon(0 0,96% 0,100% 100%,4% 100%);${base}">${n}. ${t}</div>`;
+    case 'ribbonleft': return `<div style="display:flex"><div style="background:#${p.accent};color:#${p.onAccent};padding:5px 12px 5px 8px;clip-path:polygon(0 0,100% 0,88% 50%,100% 100%,0 100%);${base}">${n}</div><div style="flex:1;background:#${p.soft};color:#${p.dark};padding:5px 12px;${base}">${t}</div></div>`;
+    default: return `<div style="color:#${p.dark};${base}">${n}. ${t}</div>`;
+  }
+}
+
+function pvTable(s){
+  const p=s.pal,f=s.typ.body;
+  const head=['Particulars','Basic Cost','GST','Total'];
+  const rows=[['Land development','120.00','21.60','141.60'],['Civil works','842.50','151.65','994.15'],['Plant and machinery','1,248.00','224.64','1,472.64'],['Total project cost','2,210.50','397.89','2,608.39']];
+  let hs='',bs=''; const st=s.tableSt;
+  const hCell=(v,i)=>{
+    let css=`font-family:${f};font-weight:700;padding:3px 4px;`;
+    if(st==='bandzebra'||st==='boxed') css+=`background:#${p.primary};color:#${p.onPrimary};`;
+    if(st==='accentlite') css+=`background:#${p.accent};color:#${p.onAccent};`;
+    if(st==='hairline') css+=`color:#${p.dark};border-bottom:2px solid #${p.primary};`;
+    if(st==='firstcol') css+=`background:#${p.dark};color:#${p.onDark};`;
+    if(st==='doublerule') css+=`color:#${p.primary};border-bottom:3px double #${p.primary};`;
+    if(st==='softgrid') css+=`background:#${p.soft};color:#${p.dark};border:1px solid #${p.rule};`;
+    if(st==='boxed') css+=`border:1px solid #${p.dark};`;
+    if(st==='heavyfirst') css+=`background:#${p.dark};color:#${p.onDark};`;
+    if(st==='colstripe') css+=`background:${i%2?`#${p.softer}`:`#${p.primary}`};color:${i%2?`#${p.dark}`:`#${p.onPrimary}`};`;
+    if(st==='dottedgrid') css+=`color:#${p.primary};border-bottom:2px dotted #${p.primary};`;
+    if(st==='toponly') css+=`color:#${p.primary};border-top:2px solid #${p.primary};border-bottom:2px solid #${p.primary};`;
+    if(st==='sideband'){css+=`background:${i===0?`#${p.primary}`:`#${p.soft}`};color:${i===0?`#${p.onPrimary}`:`#${p.dark}`};`;}
+    if(i>0) css+='text-align:right;';
+    return `<th style="${css}">${v}</th>`;
+  };
+  head.forEach((h,i)=>hs+=hCell(h,i));
+  rows.forEach((r,ri)=>{
+    let tds='';
+    r.forEach((c,ci)=>{
+      let css=`font-family:${f};padding:3px 4px;color:#2c3238;`;
+      const last=ri===rows.length-1;
+      if(st==='bandzebra'&&ri%2===1) css+=`background:#${p.softer};`;
+      if(st==='hairline') css+=`border-bottom:1px solid #${p.rule};`;
+      if(st==='boxed') css+=`border:1px solid #${p.rule};`;
+      if(st==='accentlite') css+=`border-bottom:1px solid #${p.rule};`;
+      if(st==='firstcol'&&ci===0) css+=`background:#${p.soft};font-weight:600;`;
+      if(st==='doublerule') css+=`border-bottom:1px solid #${p.rule};`;
+      if(st==='softgrid') css+=`border:1px solid #${p.rule};`;
+      if(st==='heavyfirst'){css+=`border-bottom:1px solid #${p.rule};`; if(ci===0) css+=`background:#${p.soft};font-weight:600;`;}
+      if(st==='colstripe'&&ci%2===0&&ci>0) css+=`background:#${p.softer};`;
+      if(st==='dottedgrid') css+=`border-bottom:1px dotted #${p.rule};`;
+      if(st==='toponly'){if(ri===rows.length-1) css+=`border-bottom:2px solid #${p.primary};`;}
+      if(st==='sideband'&&ci===0) css+=`background:#${p.soft};font-weight:600;color:#${p.dark};`;
+      if(last) css+=`font-weight:700;background:#${p.accentSoft};`;
+      if(ci>0) css+='text-align:right;';
+      tds+=`<td style="${css}">${c}</td>`;
+    });
+    bs+=`<tr>${tds}</tr>`;
+  });
+  return `<table class="t"><tr>${hs}</tr>${bs}</table><div class="cap">Table 1: Estimated project cost | Source: Estimates</div>`;
+}
+
+function previewPage(s,d){
+  const p=s.pal;
+  const bodyFont=s.typ.body;
+  const border = s.pageBorder ? `outline:1px solid #${p.rule};outline-offset:-5px;` : '';
+  return `<div class="page" style="${border}">
+    <div class="hdrzone">${pvHeader(s,d)}</div>
+    <div class="body" style="font-family:${bodyFont}">
+      ${pvHeading(s,'4',escapeHtml('Market Scenario'))}
+      <p class="tx">The proposed facility is located in a catchment that produces a significant surplus of horticulture output every season. Production in the district grew at a compound annual growth rate of 6.4 per cent over the last five years, while organised storage capacity grew at only 2.1 per cent.</p>
+      ${pvTable(s)}
+      <p class="tx">The gap between arrivals and available storage supports the proposed capacity, and the promoter intends to serve both institutional buyers and the local trade.</p>
+    </div>
+    <div class="ftrzone">${pvFooter(s)}</div>
+  </div>`;
+}
+/* ============================================================
+   PART 3 — Word (.docx) generation from a skin (EXPANDED)
+   ============================================================ */
+
+/* ---------- DrawingML shape helper (native editable Word shapes) ---------- */
+let __SHAPE_ID = 0;
+const EMU_PER_TWIP = 635;
+const EMU_PER_PX = 9525;
+function twipsToEmu(t){ return Math.round(t*EMU_PER_TWIP); }
+function pxToEmu(p){ return Math.round(p*EMU_PER_PX); }
+/*
+  shapeAnchor: floating shape anchored to page or margin.
+  opts: {
+    prst: 'chevron'|'rtTriangle'|'triangle'|'parallelogram'|'trapezoid'|'homePlate'|
+          'hexagon'|'diamond'|'ellipse'|'arc'|'rightArrow'|'leftArrow'|'plus'|
+          'star5'|'wave'|'flowChartConnector'|'rect'|'roundRect'|'halfFrame'|
+          'octagon'|'pentagon'|'plaque'|'cornerTabs'
+    xEmu, yEmu, cxEmu, cyEmu  (position and size in EMU)
+    fill:'A1B2C3', stroke:null|'A1B2C3', strokeW:pxOrNull,
+    behind: true|false (behind text — false = in front),
+    relH:'page'|'margin', relV:'page'|'margin',
+    rot: rotation in 60000ths of a degree (optional)
+  }
+*/
+function shapeAnchor(o){
+  const id = ++__SHAPE_ID;
+  const behind = o.behind ? 1 : 0;
+  const rot = o.rot ? ` rot="${o.rot}"` : '';
+  const stroke = o.stroke
+    ? `<a:ln w="${(o.strokeW||1)*EMU_PER_PX}"><a:solidFill><a:srgbClr val="${o.stroke}"/></a:solidFill></a:ln>`
+    : `<a:ln><a:noFill/></a:ln>`;
+  return `<w:r><w:drawing>
+<wp:anchor distT="0" distB="0" distL="0" distR="0" simplePos="0" relativeHeight="${id}" behindDoc="${behind}" locked="0" layoutInCell="1" allowOverlap="1">
+<wp:simplePos x="0" y="0"/>
+<wp:positionH relativeFrom="${o.relH||'page'}"><wp:posOffset>${o.xEmu||0}</wp:posOffset></wp:positionH>
+<wp:positionV relativeFrom="${o.relV||'page'}"><wp:posOffset>${o.yEmu||0}</wp:posOffset></wp:positionV>
+<wp:extent cx="${o.cxEmu}" cy="${o.cyEmu}"/>
+<wp:effectExtent l="0" t="0" r="0" b="0"/>
+<wp:wrapNone/>
+<wp:docPr id="${id}" name="Shape${id}"/>
+<wp:cNvGraphicFramePr/>
+<a:graphic xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main">
+<a:graphicData uri="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
+<wps:wsp xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
+<wps:cNvSpPr/>
+<wps:spPr><a:xfrm${rot}><a:off x="0" y="0"/><a:ext cx="${o.cxEmu}" cy="${o.cyEmu}"/></a:xfrm>
+<a:prstGeom prst="${o.prst}"><a:avLst/></a:prstGeom>
+<a:solidFill><a:srgbClr val="${o.fill}"/></a:solidFill>
+${stroke}
+</wps:spPr>
+<wps:bodyPr wrap="none" rtlCol="0" anchor="ctr"/>
+</wps:wsp></a:graphicData></a:graphic></wp:anchor></w:drawing></w:r>`;
+}
+
+/* A shape that carries centred text (used for badges, page-number badges) */
+function shapeInline(o){
+  const id = ++__SHAPE_ID;
+  const rot = o.rot ? ` rot="${o.rot}"` : '';
+  const stroke = o.stroke
+    ? `<a:ln w="${(o.strokeW||1)*EMU_PER_PX}"><a:solidFill><a:srgbClr val="${o.stroke}"/></a:solidFill></a:ln>`
+    : `<a:ln><a:noFill/></a:ln>`;
+  const txt = o.text ? `<wps:txbx><w:txbxContent><w:p><w:pPr><w:spacing w:before="0" w:after="0"/><w:jc w:val="center"/></w:pPr>
+<w:r><w:rPr><w:rFonts w:ascii="${o.font||'Calibri'}" w:hAnsi="${o.font||'Calibri'}"/><w:b/><w:color w:val="${o.textColor||'FFFFFF'}"/><w:sz w:val="${Math.round((o.textSz||9)*2)}"/></w:rPr><w:t xml:space="preserve">${esc(o.text)}</w:t></w:r></w:p></w:txbxContent></wps:txbx>` : '';
+  return `<w:r><w:drawing>
+<wp:inline distT="0" distB="0" distL="0" distR="0">
+<wp:extent cx="${o.cxEmu}" cy="${o.cyEmu}"/>
+<wp:effectExtent l="0" t="0" r="0" b="0"/>
+<wp:docPr id="${id}" name="Shape${id}"/>
+<wp:cNvGraphicFramePr/>
+<a:graphic xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main">
+<a:graphicData uri="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
+<wps:wsp xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
+<wps:cNvSpPr/>
+<wps:spPr><a:xfrm${rot}><a:off x="0" y="0"/><a:ext cx="${o.cxEmu}" cy="${o.cyEmu}"/></a:xfrm>
+<a:prstGeom prst="${o.prst}"><a:avLst/></a:prstGeom>
+<a:solidFill><a:srgbClr val="${o.fill}"/></a:solidFill>
+${stroke}
+</wps:spPr>
+${txt}
+<wps:bodyPr wrap="none" lIns="45720" tIns="45720" rIns="45720" bIns="45720" rtlCol="0" anchor="ctr"/>
+</wps:wsp></a:graphicData></a:graphic></wp:inline></w:drawing></w:r>`;
+}
+
+/* Convenience: A4 page geometry */
+const PAGE_W_TWIPS = 11906;
+const PAGE_MARGIN_L = 1134, PAGE_MARGIN_R = 1134, PAGE_MARGIN_T = 1600, PAGE_MARGIN_B = 1400;
+const CONTENT_W_TWIPS = PAGE_W_TWIPS - PAGE_MARGIN_L - PAGE_MARGIN_R;
+
+/* ---------- header/footer XML builders ---------- */
+function wHeader(skin, data){
+  const p=skin.pal, f=skin.typ.head;
+  const short=data.short||'', co=data.co||'', scheme=data.scheme||'', loc=data.loc||'';
+  const twoCell=(leftXml,rightXml,leftW,rightW,leftShd,rightShd,leftBorders,rightBorders)=>{
+    return table([row([
+      cell(leftXml,{w:leftW,shd:leftShd,borders:leftBorders,margins:{top:80,bottom:80,left:120,right:120},valign:'center'}),
+      cell(rightXml,{w:rightW,shd:rightShd,borders:rightBorders,margins:{top:80,bottom:80,left:120,right:120},valign:'center'})
+    ])],{w:5000,wType:'pct',layout:'fixed',grid:[Math.round(CW*leftW/(leftW+rightW)),Math.round(CW*rightW/(leftW+rightW))]});
+  };
+  const bandLine=(color,h)=>table([row([cell(para(''),{shd:color,borders:{top:NONE,left:NONE,bottom:NONE,right:NONE}})],{h:h||60,hRule:'exact'})],{w:5000,wType:'pct',grid:[CW]});
+  const rp={font:f,sz:9,color:p.onPrimary,b:true,spacing:skin.spaced?20:0,caps:skin.caps};
+  const rpDark={font:f,sz:9,color:p.dark,b:true,spacing:skin.spaced?20:0,caps:skin.caps};
+  const rpSm={font:f,sz:7.5,color:p.muted};
+  const rpPrim={font:f,sz:9,color:p.primary,b:true,spacing:skin.spaced?20:0,caps:skin.caps};
+
+  switch(skin.header){
+    case 'fullband':{
+      return twoCell(
+        para(run(short,rp),{align:'left',spacing:{after:0}}),
+        para(run(co,{font:f,sz:8,color:p.onPrimary}),{align:'right',spacing:{after:0}}),
+        3,2, p.primary, p.primary, null,null) + bandLine(p.accent,60);
+    }
+    case 'splitband':
+      return twoCell(
+        para(run(short,rp),{align:'left',spacing:{after:0}}),
+        para(run((scheme||'').split(' ')[0],{font:f,sz:8,color:p.onAccent,b:true}),{align:'center',spacing:{after:0}}),
+        4,1, p.primary, p.accent, null,null);
+    case 'rulehead':
+      return twoCell(
+        para(run(short,rpDark),{align:'left',spacing:{after:0}}),
+        para(run(co,{font:f,sz:8,color:p.dark}),{align:'right',spacing:{after:0}}),
+        3,2, null,null,
+        {bottom:{val:'single',sz:24,color:p.primary}}, {bottom:{val:'single',sz:24,color:p.primary}}
+      ) + bandLine(p.accent,30);
+    case 'cornerblock':
+      return table([row([
+        cell(para(''),{w:220,shd:p.accent,borders:null}),
+        cell(para(run(short,rpDark),{spacing:{after:0}}),{w:CW-220-1600,margins:{top:80,left:150,bottom:80,right:80},valign:'center'}),
+        cell(para(run(co,{font:f,sz:8,color:p.muted}),{align:'right',spacing:{after:0}}),{w:1600,margins:{top:80,left:80,bottom:80,right:120},valign:'center'})
+      ])],{w:5000,wType:'pct',layout:'fixed',grid:[220,CW-220-1600,1600],borders:{bottom:{val:'single',sz:6,color:p.rule}}});
+    case 'doublerule':
+      return table([row([cell(
+        para(run(short,{font:f,sz:8,color:p.primary,b:true,spacing:24,caps:true}),{align:'center',spacing:{after:0}}),
+        {borders:{top:{val:'single',sz:16,color:p.primary},bottom:{val:'single',sz:8,color:p.primary}},margins:{top:70,bottom:70,left:120,right:120}}
+      )])],{w:5000,wType:'pct',grid:[CW]});
+    case 'lefttab':
+      return twoCell(
+        para(run('DPR',{font:f,sz:9,color:p.onPrimary,b:true,caps:true}),{align:'center',spacing:{after:0}}),
+        para(run(short,rpDark),{align:'left',spacing:{after:0}}),
+        1,4, p.primary, p.soft, null, null);
+    case 'stackline':{
+      const stack = para(run(short,rpDark),{spacing:{after:0}}) + para(run(scheme,rpSm),{spacing:{after:0}});
+      return table([row([
+        cell(para(''),{w:80,shd:p.accent,borders:null}),
+        cell(stack,{w:CW-80,margins:{top:70,left:150,bottom:70,right:120},valign:'center'})
+      ])],{w:5000,wType:'pct',layout:'fixed',grid:[80,CW-80],borders:{bottom:{val:'single',sz:6,color:p.rule}}});
+    }
+    case 'reversetab':
+      return twoCell(
+        para(run(short,rpDark),{align:'left',spacing:{after:0}}),
+        para(run(loc,{font:f,sz:8,color:p.onDark,b:true}),{align:'center',spacing:{after:0}}),
+        4,1, p.softer, p.dark, null,null) + bandLine(p.accent,40);
+    case 'edgeblocks':
+      return table([row([
+        cell(para(''),{w:400,shd:p.primary,borders:null}),
+        cell(para(''),{w:120,shd:p.accent,borders:null}),
+        cell(para(run(short,rpDark),{spacing:{after:0}}),{w:CW-1120,margins:{top:70,left:160,bottom:70,right:80},valign:'center'}),
+        cell(para(''),{w:600,shd:p.soft,borders:null})
+      ])],{w:5000,wType:'pct',layout:'fixed',grid:[400,120,CW-1120,600],borders:{bottom:{val:'single',sz:4,color:p.rule}}});
+    case 'thinband':
+      return bandLine(p.primary,80) + twoCell(
+        para(run(short,rpDark),{align:'left',spacing:{after:0}}),
+        para(run(co,{font:f,sz:8,color:p.muted}),{align:'right',spacing:{after:0}}),
+        3,2, null, null,
+        {bottom:{val:'single',sz:6,color:p.rule}}, {bottom:{val:'single',sz:6,color:p.rule}});
+    /* ---- shape-driven headers ---- */
+    case 'chevronleft':{
+      const chevron = shapeInline({prst:'chevron', cxEmu:pxToEmu(70), cyEmu:pxToEmu(22), fill:p.primary, text:'DPR', font:f, textColor:p.onPrimary, textSz:8});
+      const row1 = twoCell(
+        para(chevron+run('   '+short,rpDark),{align:'left',spacing:{after:0}}),
+        para(run(co,{font:f,sz:8,color:p.muted}),{align:'right',spacing:{after:0}}),
+        3,2, null, null, null, null);
+      return row1 + bandLine(p.accent,30);
+    }
+    case 'angledcut':{
+      // Full-row parallelogram carrying the text as label
+      const bandTxt = short + '        ' + co;
+      const shape = shapeInline({prst:'parallelogram', cxEmu:twipsToEmu(CONTENT_W_TWIPS), cyEmu:pxToEmu(28), fill:p.primary, text:short, font:f, textColor:p.onPrimary, textSz:9});
+      return para(shape,{align:'left',spacing:{after:0}});
+    }
+    case 'triangleflag':{
+      // Use an inline small triangle in the header cell — always stays with the text row
+      const tri = shapeInline({prst:'rtTriangle', cxEmu:pxToEmu(22), cyEmu:pxToEmu(18), fill:p.accent});
+      return twoCell(
+        para(tri+run('  '+short,rpDark),{align:'left',spacing:{after:0}}),
+        para(run(co,{font:f,sz:8,color:p.muted}),{align:'right',spacing:{after:0}}),
+        3,2, null,null,
+        {bottom:{val:'single',sz:6,color:p.rule}}, {bottom:{val:'single',sz:6,color:p.rule}});
+    }
+    case 'notchedband':{
+      // Three-cell table with a diamond accent in the middle
+      const diamond = shapeInline({prst:'diamond', cxEmu:pxToEmu(18), cyEmu:pxToEmu(18), fill:p.accent});
+      return table([row([
+        cell(para(run(short,rp),{align:'left',spacing:{after:0}}),{w:Math.round(CW*0.42),shd:p.primary,borders:null,margins:{top:80,bottom:80,left:180,right:120},valign:'center'}),
+        cell(para(diamond,{align:'center',spacing:{after:0}}),{w:Math.round(CW*0.10),borders:null,margins:{top:40,bottom:40,left:40,right:40},valign:'center'}),
+        cell(para(run(co,{font:f,sz:8,color:p.onPrimary}),{align:'right',spacing:{after:0}}),{w:Math.round(CW*0.48),shd:p.primary,borders:null,margins:{top:80,bottom:80,left:120,right:180},valign:'center'})
+      ])],{w:5000,wType:'pct',layout:'fixed',grid:[Math.round(CW*0.42),Math.round(CW*0.10),Math.round(CW*0.48)]});
+    }
+    case 'ribbontab':{
+      const scheme1 = (scheme||'DPR').split(' ')[0];
+      const rib = shapeInline({prst:'homePlate', cxEmu:pxToEmu(80), cyEmu:pxToEmu(22), fill:p.accent, text:scheme1, font:f, textColor:p.onAccent, textSz:8});
+      return twoCell(
+        para(rib,{align:'left',spacing:{after:0}}),
+        para(run(short,rpDark),{align:'right',spacing:{after:0}}),
+        2,3, null,null, null, {bottom:{val:'single',sz:8,color:p.primary}});
+    }
+    case 'arcband':{
+      // Row with rounded-right shape as label + right cell
+      const shape = shapeInline({prst:'round2SameRect', cxEmu:twipsToEmu(CONTENT_W_TWIPS), cyEmu:pxToEmu(30), fill:p.primary, text:short, font:f, textColor:p.onPrimary, textSz:9});
+      return para(shape,{align:'left',spacing:{after:0}});
+    }
+    case 'hexmark':{
+      const hex = shapeInline({prst:'hexagon', cxEmu:pxToEmu(22), cyEmu:pxToEmu(22), fill:p.accent});
+      return twoCell(
+        para(hex+run('  '+short,rpPrim),{align:'left',spacing:{after:0}}),
+        para(run(co,{font:f,sz:8,color:p.muted}),{align:'right',spacing:{after:0}}),
+        3,2, null,null,
+        {bottom:{val:'single',sz:6,color:p.rule}}, {bottom:{val:'single',sz:6,color:p.rule}});
+    }
+    case 'steppedblocks':{
+      const b1 = shapeInline({prst:'rect', cxEmu:pxToEmu(12), cyEmu:pxToEmu(22), fill:p.dark});
+      const b2 = shapeInline({prst:'rect', cxEmu:pxToEmu(8), cyEmu:pxToEmu(16), fill:p.accent});
+      return twoCell(
+        para(b1+run(' ',{font:f,sz:9})+b2+run('  '+short,rpDark),{align:'left',spacing:{after:0}}),
+        para(run(co,{font:f,sz:8,color:p.muted}),{align:'right',spacing:{after:0}}),
+        3,2, null,null,
+        {bottom:{val:'single',sz:6,color:p.rule}}, {bottom:{val:'single',sz:6,color:p.rule}});
+    }
+    case 'arrowtab':{
+      const arr = shapeInline({prst:'rightArrow', cxEmu:pxToEmu(60), cyEmu:pxToEmu(20), fill:p.primary, text:'DPR', font:f, textColor:p.onPrimary, textSz:8});
+      return twoCell(
+        para(arr+run('  '+short,rpDark),{align:'left',spacing:{after:0}}),
+        para(run(co,{font:f,sz:8,color:p.muted}),{align:'right',spacing:{after:0}}),
+        3,2, null,null, null,null) + bandLine(p.rule,30);
+    }
+    case 'diamondstrip':{
+      let strip='';
+      for(let i=0;i<8;i++){
+        strip += shapeInline({prst:'diamond', cxEmu:pxToEmu(8), cyEmu:pxToEmu(8), fill: i%2? p.accent:p.primary});
+        strip += run(' ',{font:f,sz:6});
+      }
+      return twoCell(
+        para(run(short,rpDark),{align:'left',spacing:{after:0}}),
+        para(strip,{align:'right',spacing:{after:0}}),
+        3,2, null,null,
+        {bottom:{val:'single',sz:6,color:p.rule}}, {bottom:{val:'single',sz:6,color:p.rule}});
+    }
+    case 'dotgrid':{
+      let dots='';
+      for(let i=0;i<14;i++){
+        dots += shapeInline({prst:'ellipse', cxEmu:pxToEmu(5), cyEmu:pxToEmu(5), fill:p.accent});
+        dots += run(' ',{font:f,sz:6});
+      }
+      return twoCell(
+        para(run(short,rpPrim),{align:'left',spacing:{after:0}}),
+        para(dots,{align:'right',spacing:{after:0}}),
+        3,2, null,null, null,null) + bandLine(p.primary,30);
+    }
+    case 'twinbars':{
+      const b1 = shapeInline({prst:'rect', cxEmu:pxToEmu(5), cyEmu:pxToEmu(22), fill:p.primary});
+      const b2 = shapeInline({prst:'rect', cxEmu:pxToEmu(5), cyEmu:pxToEmu(22), fill:p.accent});
+      return twoCell(
+        para(b1+run(' ',{font:f,sz:9})+b2+run('  '+short,rpDark),{align:'left',spacing:{after:0}}),
+        para(run(co,{font:f,sz:8,color:p.muted}),{align:'right',spacing:{after:0}}),
+        3,2, null,null,
+        {bottom:{val:'single',sz:6,color:p.rule}}, {bottom:{val:'single',sz:6,color:p.rule}});
+    }
+    default:
+      return twoCell(
+        para(run(short,rp),{align:'left',spacing:{after:0}}),
+        para(run(co,{font:f,sz:8,color:p.onPrimary}),{align:'right',spacing:{after:0}}),
+        3,2, p.primary, p.primary, null,null);
+  }
+}
+
+function wFooter(skin){
+  const p=skin.pal, f=skin.typ.body;
+  const pageRun=(o)=>fld('PAGE \\* MERGEFORMAT',o);
+  const numTotal=(o)=>fld('NUMPAGES \\* MERGEFORMAT',o);
+  const single=(xml)=>table([row([cell(xml,{borders:{top:NONE,left:NONE,bottom:NONE,right:NONE},margins:{top:60,left:120,bottom:60,right:120}})])],{w:5000,wType:'pct',grid:[CW]});
+
+  switch(skin.footer){
+    case 'tilde':
+      return para(run('~ ',{font:f,sz:9,color:p.primary})+pageRun({font:f,sz:9,color:p.primary})+run(' ~',{font:f,sz:9,color:p.primary}),{align:'center',spacing:{after:0}});
+    case 'pill':{
+      return table([row([
+        cell(para(pageRun({font:f,sz:9,color:p.onPrimary,b:true}),{align:'center',spacing:{after:0}}),
+             {w:600,shd:p.primary,borders:null,margins:{top:30,bottom:30,left:60,right:60}})
+      ])],{w:0,wType:'auto',align:'center',grid:[600]});
+    }
+    case 'ruleright':
+      return single(para(pageRun({font:f,sz:9,color:p.primary,b:true}),{align:'right',borders:{top:{val:'single',sz:6,color:p.rule}},spacing:{before:20,after:0}}));
+    case 'boxed':
+      return table([row([
+        cell(para(pageRun({font:f,sz:9,color:p.primary,b:true}),{align:'center',spacing:{after:0}}),
+             {w:500,borders:{top:{val:'single',sz:8,color:p.primary},bottom:{val:'single',sz:8,color:p.primary},left:{val:'single',sz:8,color:p.primary},right:{val:'single',sz:8,color:p.primary}},margins:{top:20,bottom:20,left:60,right:60}})
+      ])],{w:0,wType:'auto',align:'center',grid:[500]});
+    case 'pageofn':
+      return single(para(
+        run('PAGE ',{font:f,sz:7.5,color:p.muted,caps:true,spacing:24})+
+        pageRun({font:f,sz:7.5,color:p.muted,caps:true,spacing:24})+
+        run(' OF ',{font:f,sz:7.5,color:p.muted,caps:true,spacing:24})+
+        numTotal({font:f,sz:7.5,color:p.muted,caps:true,spacing:24}),
+        {align:'center',borders:{top:{val:'single',sz:6,color:p.rule}},spacing:{before:30,after:0}}));
+    case 'lefttab':
+      return table([row([
+        cell(para(pageRun({font:f,sz:9,color:p.onAccent,b:true}),{align:'center',spacing:{after:0}}),
+             {w:500,shd:p.accent,borders:null,margins:{top:30,bottom:30,left:60,right:60}}),
+        cell(para('',{spacing:{after:0}}),
+             {w:CW-500,borders:{bottom:{val:'single',sz:6,color:p.rule}},margins:{top:30,bottom:30,left:60,right:60},valign:'center'})
+      ])],{w:5000,wType:'pct',layout:'fixed',grid:[500,CW-500]});
+    case 'bandftr':
+      return table([row([cell(
+        para(pageRun({font:f,sz:9,color:p.onPrimary,b:true}),{align:'center',spacing:{after:0}}),
+        {shd:p.primary,borders:null,margins:{top:60,bottom:60,left:120,right:120}})])],{w:5000,wType:'pct',grid:[CW]});
+    case 'dotrule':
+      return single(para(pageRun({font:f,sz:9,color:p.primary,b:true}),{align:'center',borders:{top:{val:'dotted',sz:6,color:p.rule}},spacing:{before:20,after:0}}));
+    /* new shape footers */
+    case 'chevronpg':{
+      // shape-in-inline: use inline shape with text run separately
+      const badge = shapeInline({prst:'chevron', cxEmu:pxToEmu(46), cyEmu:pxToEmu(18), fill:p.primary, text:'', font:f, textColor:p.onPrimary, textSz:9});
+      return table([row([cell(
+        para(badge, {align:'center',spacing:{after:0}}),
+        {borders:{top:{val:'single',sz:4,color:p.rule}},margins:{top:40,bottom:20,left:120,right:120}}
+      )])],{w:5000,wType:'pct',grid:[CW]}) + para(pageRun({font:f,sz:9,color:p.primary,b:true}),{align:'center',spacing:{before:-260,after:0}});
+    }
+    case 'trianglepg':{
+      const t1 = shapeInline({prst:'triangle', cxEmu:pxToEmu(10), cyEmu:pxToEmu(10), fill:p.accent, rot:-5400000});
+      const t2 = shapeInline({prst:'triangle', cxEmu:pxToEmu(10), cyEmu:pxToEmu(10), fill:p.accent, rot:5400000});
+      return para(t1+run(' ',{font:f,sz:9})+pageRun({font:f,sz:10,color:p.primary,b:true})+run(' ',{font:f,sz:9})+t2,{align:'center',spacing:{after:0}});
+    }
+    case 'hexpg':{
+      const badge = shapeInline({prst:'hexagon', cxEmu:pxToEmu(30), cyEmu:pxToEmu(22), fill:p.primary});
+      return para(badge+run(' ',{font:f,sz:9})+pageRun({font:f,sz:10,color:p.primary,b:true}),{align:'center',spacing:{after:0}});
+    }
+    case 'arcpg':{
+      return para(pageRun({font:f,sz:10,color:p.primary,b:true}),{align:'center',spacing:{after:0}}) +
+        table([row([cell(para(''),{shd:p.accent,borders:null})],{h:60,hRule:'exact'})],{w:0,wType:'dxa',grid:[900],align:'center'});
+    }
+    case 'diamondpg':{
+      const d1 = shapeInline({prst:'diamond', cxEmu:pxToEmu(9), cyEmu:pxToEmu(9), fill:p.accent});
+      const d2 = shapeInline({prst:'diamond', cxEmu:pxToEmu(9), cyEmu:pxToEmu(9), fill:p.accent});
+      return para(d1+run('   ',{font:f,sz:9})+pageRun({font:f,sz:10,color:p.primary,b:true})+run('   ',{font:f,sz:9})+d2,{align:'center',spacing:{after:0}});
+    }
+    default:
+      return single(para(pageRun({font:f,sz:9,color:p.primary,b:true}),{align:'center',spacing:{after:0}}));
+  }
+}
+
+/* ---------- content builders ---------- */
+function wHeading(skin, n, title){
+  const p=skin.pal, f=skin.typ.head;
+  const rp={font:f,sz:skin.typ.hSz,color:p.onPrimary,b:true,caps:skin.caps,spacing:skin.spaced?24:0};
+  const rpDark={font:f,sz:skin.typ.hSz,color:p.dark,b:true,caps:skin.caps,spacing:skin.spaced?24:0};
+  const rpPrim={font:f,sz:skin.typ.hSz,color:p.primary,b:true,caps:skin.caps,spacing:skin.spaced?24:0};
+
+  switch(skin.heading){
+    case 'reverseband':
+      return table([row([cell(
+        para(run(`${n}. ${title}`,rp),{spacing:{before:60,after:60}}),
+        {shd:p.primary,borders:null,margins:{top:80,bottom:80,left:180,right:180}}
+      )])],{w:5000,wType:'pct',grid:[CW]});
+    case 'leftbar':
+      return table([row([
+        cell(para(''),{w:120,shd:p.accent,borders:null}),
+        cell(para(run(`${n}. ${title}`,rpDark),{spacing:{after:0}}),{w:CW-120,margins:{top:80,left:180,bottom:80,right:120},valign:'center'})
+      ])],{w:5000,wType:'pct',layout:'fixed',grid:[120,CW-120]});
+    case 'underline':
+      return para(run(`${n}. ${title}`,rpDark),{borders:{bottom:{val:'single',sz:24,color:p.primary}},spacing:{before:120,after:60}});
+    case 'chip':
+      return table([row([
+        cell(para(run(n,rp),{align:'center',spacing:{after:0}}),{w:600,shd:p.accent,borders:null,margins:{top:80,left:60,bottom:80,right:60},valign:'center'}),
+        cell(para(run(title,rpDark),{spacing:{after:0}}),{w:CW-600,shd:p.soft,borders:null,margins:{top:80,left:180,bottom:80,right:120},valign:'center'})
+      ])],{w:5000,wType:'pct',layout:'fixed',grid:[600,CW-600]});
+    case 'capsrule':
+      return para(run(`${n}. ${title}`,{font:f,sz:skin.typ.hSz-0.5,color:p.primary,b:true,caps:true,spacing:40}),
+        {borders:{bottom:{val:'single',sz:6,color:p.rule}},spacing:{before:120,after:80}});
+    case 'splittone':{
+      const line=run(`${n}. `,{font:f,sz:skin.typ.hSz,color:p.accent,b:true,caps:skin.caps})+
+                 run(title,{font:f,sz:skin.typ.hSz,color:p.dark,b:true,caps:skin.caps});
+      return para(line,{spacing:{before:120,after:20}})+
+             table([row([cell(para(''),{shd:p.accent,borders:null})],{h:40,hRule:'exact'})],{w:0,wType:'dxa',grid:[900]});
+    }
+    case 'shadedlight':
+      return table([row([
+        cell(para(''),{w:100,shd:p.primary,borders:null}),
+        cell(para(run(`${n}. ${title}`,rpDark),{spacing:{after:0}}),{w:CW-100,shd:p.soft,borders:null,margins:{top:80,left:180,bottom:80,right:120},valign:'center'})
+      ])],{w:5000,wType:'pct',layout:'fixed',grid:[100,CW-100]});
+    case 'bandright':
+      return table([row([
+        cell(para(run(`${n}. ${title}`,rp),{spacing:{after:0}}),{w:CW-320,shd:p.dark,borders:null,margins:{top:80,left:180,bottom:80,right:120},valign:'center'}),
+        cell(para(''),{w:320,shd:p.accent,borders:null})
+      ])],{w:5000,wType:'pct',layout:'fixed',grid:[CW-320,320]});
+    /* --- shape-driven headings (inline shapes stay with the paragraph) --- */
+    case 'arrowtab':{
+      const arrow = shapeInline({prst:'rightArrow', cxEmu:pxToEmu(70), cyEmu:pxToEmu(26), fill:p.primary, text:String(n), font:f, textColor:p.onPrimary, textSz:skin.typ.hSz});
+      return table([row([
+        cell(para(arrow,{spacing:{after:0}}),{w:1400,shd:null,borders:null,margins:{top:80,bottom:80,left:120,right:60},valign:'center'}),
+        cell(para(run(title,rpDark),{spacing:{after:0}}),{w:CW-1400,shd:p.softer,borders:null,margins:{top:100,bottom:100,left:120,right:120},valign:'center'})
+      ])],{w:5000,wType:'pct',layout:'fixed',grid:[1400,CW-1400]});
+    }
+    case 'cutcorner':{
+      // Use a homePlate shape as the heading (right-pointing pentagon)
+      const shape = shapeInline({prst:'homePlate', cxEmu:twipsToEmu(CONTENT_W_TWIPS), cyEmu:pxToEmu(36), fill:p.primary, text:`${n}. ${title}`, font:f, textColor:p.onPrimary, textSz:skin.typ.hSz});
+      return para(shape,{spacing:{before:120,after:60},align:'left'});
+    }
+    case 'chevronstart':{
+      const chev = shapeInline({prst:'chevron', cxEmu:pxToEmu(30), cyEmu:pxToEmu(20), fill:p.accent});
+      return para(chev+run('  '+`${n}. ${title}`,rpDark),
+        {borders:{bottom:{val:'single',sz:6,color:p.rule}},spacing:{before:120,after:60}});
+    }
+    case 'trianglemk':{
+      const tri = shapeInline({prst:'rtTriangle', cxEmu:pxToEmu(18), cyEmu:pxToEmu(18), fill:p.accent});
+      return para(tri+run('  '+`${n}. ${title}`,rpDark),
+        {borders:{bottom:{val:'single',sz:6,color:p.rule}},spacing:{before:120,after:60}});
+    }
+    case 'hextab':{
+      const hex = shapeInline({prst:'hexagon', cxEmu:pxToEmu(40), cyEmu:pxToEmu(30), fill:p.accent, text:String(n), font:f, textColor:p.onAccent, textSz:skin.typ.hSz});
+      return table([row([
+        cell(para(hex,{spacing:{after:0}}),{w:900,borders:null,margins:{top:60,bottom:60,left:60,right:60},valign:'center'}),
+        cell(para(run(title,rpDark),{spacing:{after:0}}),{w:CW-900,borders:{bottom:{val:'single',sz:6,color:p.rule}},margins:{top:80,bottom:80,left:120,right:120},valign:'center'})
+      ])],{w:5000,wType:'pct',layout:'fixed',grid:[900,CW-900]});
+    }
+    case 'circletab':{
+      const circ = shapeInline({prst:'ellipse', cxEmu:pxToEmu(30), cyEmu:pxToEmu(30), fill:p.primary, text:String(n), font:f, textColor:p.onPrimary, textSz:skin.typ.hSz-1});
+      return table([row([
+        cell(para(circ,{spacing:{after:0}}),{w:700,borders:null,margins:{top:60,bottom:60,left:60,right:60},valign:'center'}),
+        cell(para(run(title,rpDark),{spacing:{after:0}}),{w:CW-700,borders:{bottom:{val:'single',sz:6,color:p.rule}},margins:{top:80,bottom:80,left:120,right:120},valign:'center'})
+      ])],{w:5000,wType:'pct',layout:'fixed',grid:[700,CW-700]});
+    }
+    case 'notchedbg':{
+      // homePlate spanning full width, holding the heading text as its label
+      const shape = shapeInline({prst:'homePlate', cxEmu:twipsToEmu(CONTENT_W_TWIPS), cyEmu:pxToEmu(38), fill:p.dark, text:`${n}. ${title}`, font:f, textColor:p.onDark, textSz:skin.typ.hSz});
+      return para(shape,{spacing:{before:120,after:60},align:'left'});
+    }
+    case 'ribbonleft':{
+      const rib = shapeInline({prst:'homePlate', cxEmu:pxToEmu(90), cyEmu:pxToEmu(30), fill:p.accent, text:String(n), font:f, textColor:p.onAccent, textSz:skin.typ.hSz});
+      return table([row([
+        cell(para(rib,{spacing:{after:0}}),{w:1600,borders:null,margins:{top:60,bottom:60,left:60,right:60},valign:'center'}),
+        cell(para(run(title,rpDark),{spacing:{after:0}}),{w:CW-1600,shd:p.softer,borders:null,margins:{top:80,bottom:80,left:120,right:120},valign:'center'})
+      ])],{w:5000,wType:'pct',layout:'fixed',grid:[1600,CW-1600]});
+    }
+    default:
+      return para(run(`${n}. ${title}`,rpDark),{spacing:{before:120,after:60}});
+  }
+}
+
+function wSubheading(skin, text){
+  const p=skin.pal,f=skin.typ.head;
+  return para(run(text,{font:f,sz:11.5,color:p.dark,b:true}),{spacing:{before:180,after:60}});
+}
+function wPara(skin, text){
+  const p=skin.pal,f=skin.typ.body;
+  return para(run(text,{font:f,sz:skin.typ.bSz,color:p.ink}),{align:'both',spacing:{after:120,line:280}});
+}
+function wCaption(skin, text){
+  const p=skin.pal,f=skin.typ.body;
+  return para(run(text,{font:f,sz:8.5,color:p.muted,i:true}),{align:'center',spacing:{before:40,after:120}});
+}
+
+/* costing table with chosen style */
+function wCostTable(skin){
+  const p=skin.pal, f=skin.typ.body;
+  const head=['Particulars','Basic Cost','GST','Total'];
+  const rows=[
+    ['Land development and site work','120.00','21.60','141.60'],
+    ['Civil and building works','842.50','151.65','994.15'],
+    ['Plant and machinery','1,248.00','224.64','1,472.64'],
+    ['Electrical and utilities','215.30','38.75','254.05'],
+    ['Preliminary and preoperative','40.00','7.20','47.20'],
+    ['Contingency at 3 per cent','85.00','15.30','100.30'],
+    ['Total project cost','2,550.80','458.14','3,008.94']
+  ];
+  const st=skin.tableSt;
+  const grid=[Math.round(CW*0.48),Math.round(CW*0.18),Math.round(CW*0.14),Math.round(CW*0.20)];
+  const noneB={top:NONE,left:NONE,bottom:NONE,right:NONE};
+  const hair={top:{val:'single',sz:2,color:p.rule},left:{val:'single',sz:2,color:p.rule},bottom:{val:'single',sz:2,color:p.rule},right:{val:'single',sz:2,color:p.rule}};
+
+  function styleForHeader(ci){
+    switch(st){
+      case 'bandzebra': return {shd:p.primary,run:{font:f,sz:9.5,color:p.onPrimary,b:true},borders:noneB};
+      case 'hairline':  return {shd:null,run:{font:f,sz:9.5,color:p.primary,b:true},borders:{bottom:{val:'single',sz:18,color:p.primary}}};
+      case 'boxed':     return {shd:p.dark,run:{font:f,sz:9.5,color:p.onDark,b:true},borders:hair};
+      case 'accentlite':return {shd:p.accent,run:{font:f,sz:9.5,color:p.onAccent,b:true},borders:noneB};
+      case 'firstcol':  return {shd:p.dark,run:{font:f,sz:9.5,color:p.onDark,b:true},borders:noneB};
+      case 'doublerule':return {shd:null,run:{font:f,sz:9.5,color:p.primary,b:true},borders:{bottom:{val:'double',sz:12,color:p.primary}}};
+      case 'softgrid':  return {shd:p.soft,run:{font:f,sz:9.5,color:p.dark,b:true},borders:hair};
+      case 'heavyfirst':return {shd:p.dark,run:{font:f,sz:9.5,color:p.onDark,b:true},borders:{bottom:{val:'single',sz:12,color:p.primary}}};
+      case 'colstripe': return {shd:ci%2?p.softer:p.primary,run:{font:f,sz:9.5,color:ci%2?p.dark:p.onPrimary,b:true},borders:noneB};
+      case 'dottedgrid':return {shd:null,run:{font:f,sz:9.5,color:p.primary,b:true},borders:{bottom:{val:'dotted',sz:8,color:p.primary}}};
+      case 'toponly':   return {shd:null,run:{font:f,sz:9.5,color:p.primary,b:true},borders:{top:{val:'single',sz:16,color:p.primary},bottom:{val:'single',sz:8,color:p.primary}}};
+      case 'sideband':  return {shd:ci===0?p.primary:p.soft,run:{font:f,sz:9.5,color:ci===0?p.onPrimary:p.dark,b:true},borders:noneB};
+    }
+  }
+  function styleForBody(ri,ci,last){
+    const zebra = (st==='bandzebra' && ri%2===1);
+    let b = {
+      top: (st==='hairline'||st==='doublerule'||st==='toponly'||st==='dottedgrid'||st==='sideband')?NONE:{val:'single',sz:2,color:p.rule},
+      bottom:{val:'single',sz:2,color:p.rule},
+      left: (st==='hairline'||st==='doublerule'||st==='toponly'||st==='sideband')?NONE:{val:'single',sz:2,color:p.rule},
+      right:(st==='hairline'||st==='doublerule'||st==='toponly'||st==='sideband')?NONE:{val:'single',sz:2,color:p.rule}
+    };
+    if(st==='boxed') Object.assign(b,{top:{val:'single',sz:2,color:p.rule},left:{val:'single',sz:2,color:p.rule},right:{val:'single',sz:2,color:p.rule}});
+    if(st==='dottedgrid') b.bottom={val:'dotted',sz:4,color:p.rule};
+    if(st==='toponly'){ if(!last) b.bottom=NONE; else b.bottom={val:'single',sz:12,color:p.primary}; }
+    let shd=null;
+    if(zebra) shd=p.softer;
+    if(st==='firstcol' && ci===0) shd=p.soft;
+    if(st==='heavyfirst' && ci===0) shd=p.soft;
+    if(st==='colstripe' && ci%2===0 && ci>0) shd=p.softer;
+    if(st==='sideband' && ci===0) shd=p.soft;
+    if(last) shd=p.accentSoft;
+    return {shd,borders:b};
+  }
+  const hCells=head.map((h,i)=>{
+    const s=styleForHeader(i);
+    return cell(
+      para(run(h,s.run),{align: i===0?'left':'right', spacing:{after:0}}),
+      {w:grid[i],wType:'dxa',shd:s.shd,borders:s.borders,margins:{top:80,left:120,bottom:80,right:120},valign:'center'}
+    );
+  });
+  const rowsX=[row(hCells,{header:true})];
+  rows.forEach((r,ri)=>{
+    const last=ri===rows.length-1;
+    const cells=r.map((v,ci)=>{
+      const s=styleForBody(ri,ci,last);
+      const rpc={font:f,sz:9,color:p.ink,b: last || ((st==='firstcol'||st==='heavyfirst'||st==='sideband')&&ci===0)};
+      return cell(para(run(v,rpc),{align: ci===0?'left':'right', spacing:{after:0}}),
+        {w:grid[ci],wType:'dxa',shd:s.shd,borders:s.borders,margins:{top:60,left:120,bottom:60,right:120}});
+    });
+    rowsX.push(row(cells));
+  });
+  return table(rowsX,{w:5000,wType:'pct',layout:'fixed',grid});
+}
+
+/* cover pages (expanded with geometric shape covers) */
+function wCover(skin, data){
+  const p=skin.pal, fh=skin.typ.head, fb=skin.typ.body;
+  const spacer=(h)=>table([row([cell(para(''),{borders:null})],{h,hRule:'exact'})],{w:5000,wType:'pct',grid:[CW]});
+  const bigTitle={font:fh,sz:28,color:p.onPrimary,b:true,caps:true,spacing:60};
+  const bigTitleDark={font:fh,sz:28,color:p.dark,b:true,caps:true,spacing:60};
+  const bigTitleWhite={font:fh,sz:28,color:'FFFFFF',b:true,caps:true,spacing:60};
+  const sub={font:fb,sz:13,color:p.onPrimary};
+  const subDark={font:fb,sz:13,color:p.dark};
+
+  const infoBlock=(color)=>
+    para(run(data.co,{font:fh,sz:13,color,b:true}),{align:'center',spacing:{after:40}})+
+    para(run(data.loc,{font:fb,sz:11,color}),{align:'center',spacing:{after:20}})+
+    para(run(data.scheme,{font:fb,sz:10.5,color,i:true}),{align:'center',spacing:{after:40}})+
+    para(run(`Prepared by ${data.by}`,{font:fb,sz:10,color}),{align:'center',spacing:{after:20}})+
+    para(run(data.date||'',{font:fb,sz:10,color}),{align:'center',spacing:{after:0}});
+
+  switch(skin.cover){
+    case 'topblock':{
+      const top=table([row([cell(
+        spacer(300)+
+        para(run('DETAILED PROJECT REPORT',{font:fh,sz:11,color:p.onPrimary,caps:true,spacing:60}),{align:'center',spacing:{after:60}})+
+        para(run(data.title,bigTitle),{align:'center',spacing:{after:40}})+
+        para(run(data.sub,sub),{align:'center',spacing:{after:60}})+
+        spacer(200),
+        {shd:p.primary,borders:null,margins:{top:200,bottom:200,left:200,right:200}}
+      )])],{w:5000,wType:'pct',grid:[CW]});
+      return top+spacer(600)+infoBlock(p.dark)+`<w:p><w:r><w:br w:type="page"/></w:r></w:p>`;
+    }
+    case 'sidebar':{
+      const t=table([row([
+        cell(spacer(400)+
+          para(run(data.short.toUpperCase(),{font:fh,sz:11,color:p.onPrimary,caps:true,spacing:80}),{align:'center',spacing:{after:0}})+
+          spacer(11000),
+          {w:1400,shd:p.primary,borders:null,margins:{top:200,bottom:200,left:80,right:80}}),
+        cell(spacer(1400)+
+          para(run('DETAILED PROJECT REPORT',{font:fh,sz:11,color:p.primary,caps:true,spacing:80}),{spacing:{after:80}})+
+          para(run(data.title,bigTitleDark),{spacing:{after:80}})+
+          table([row([cell(para(''),{shd:p.accent,borders:null})],{h:80,hRule:'exact'})],{w:0,wType:'dxa',grid:[1600]})+
+          para(run(data.sub,subDark),{spacing:{before:120,after:400}})+
+          infoBlock(p.dark),
+          {w:CW-1400,borders:null,margins:{top:200,bottom:200,left:400,right:200}})
+      ])],{w:5000,wType:'pct',layout:'fixed',grid:[1400,CW-1400]});
+      return t + `<w:p><w:r><w:br w:type="page"/></w:r></w:p>`;
+    }
+    case 'centrerule':
+      return spacer(2400)+
+        table([row([cell(para(''),{shd:p.accent,borders:null})],{h:60,hRule:'exact'})],{w:0,wType:'dxa',grid:[1400],align:'center'})+
+        para(run('DETAILED PROJECT REPORT',{font:fh,sz:11,color:p.primary,caps:true,spacing:80}),{align:'center',spacing:{before:120,after:120}})+
+        para(run(data.title,bigTitleDark),{align:'center',spacing:{after:80}})+
+        para(run(data.sub,subDark),{align:'center',spacing:{after:200}})+
+        table([row([cell(para(''),{shd:p.accent,borders:null})],{h:60,hRule:'exact'})],{w:0,wType:'dxa',grid:[1400],align:'center'})+
+        spacer(600)+infoBlock(p.dark)+`<w:p><w:r><w:br w:type="page"/></w:r></w:p>`;
+    case 'bottomband':
+      return spacer(1400)+
+        para(run(data.title,bigTitleDark),{align:'center',spacing:{after:80}})+
+        para(run(data.sub,subDark),{align:'center',spacing:{after:400}})+
+        spacer(2400)+
+        table([row([cell(
+          para(run('DETAILED PROJECT REPORT',{font:fh,sz:11,color:p.onPrimary,caps:true,spacing:80}),{align:'center',spacing:{after:120}})+
+          infoBlock(p.onPrimary),
+          {shd:p.primary,borders:null,margins:{top:300,bottom:300,left:200,right:200}}
+        )])],{w:5000,wType:'pct',grid:[CW]})+`<w:p><w:r><w:br w:type="page"/></w:r></w:p>`;
+    case 'stackbands':
+      return table([row([cell(
+        para(run('DETAILED PROJECT REPORT',{font:fh,sz:11,color:p.onPrimary,caps:true,spacing:80}),{align:'center',spacing:{after:80}})+
+        para(run(data.title,bigTitle),{align:'center',spacing:{after:0}}),
+        {shd:p.primary,borders:null,margins:{top:600,bottom:400,left:200,right:200}}
+      )])],{w:5000,wType:'pct',grid:[CW]})+
+      table([row([cell(
+        para(run(data.sub,{font:fb,sz:13,color:p.onAccent}),{align:'center',spacing:{after:0}}),
+        {shd:p.accent,borders:null,margins:{top:200,bottom:200,left:200,right:200}}
+      )])],{w:5000,wType:'pct',grid:[CW]})+
+      spacer(1200)+infoBlock(p.dark)+`<w:p><w:r><w:br w:type="page"/></w:r></w:p>`;
+    case 'framed':
+      return spacer(1600)+
+        table([row([cell(
+          para(run('DETAILED PROJECT REPORT',{font:fh,sz:11,color:p.primary,caps:true,spacing:80}),{align:'center',spacing:{after:120}})+
+          para(run(data.title,bigTitleDark),{align:'center',spacing:{after:80}})+
+          para(run(data.sub,subDark),{align:'center',spacing:{after:400}})+
+          infoBlock(p.dark),
+          {shd:p.softer,borders:{top:{val:'single',sz:12,color:p.primary},bottom:{val:'single',sz:12,color:p.primary},left:{val:'single',sz:12,color:p.primary},right:{val:'single',sz:12,color:p.primary}},margins:{top:400,bottom:400,left:400,right:400}}
+        )])],{w:5000,wType:'pct',grid:[CW]})+`<w:p><w:r><w:br w:type="page"/></w:r></w:p>`;
+    /* --- new geometric shape covers --- */
+    case 'diagonalsplit':{
+      // Small triangle accent in top-left corner only; text safely below
+      const shapes =
+        shapeAnchor({prst:'rtTriangle', xEmu:0, yEmu:0, cxEmu:twipsToEmu(Math.round(PAGE_W_TWIPS*0.55)), cyEmu:twipsToEmu(2800), fill:p.primary, behind:true, relH:'page', relV:'page', rot:10800000})+
+        shapeAnchor({prst:'rect', xEmu:twipsToEmu(Math.round(PAGE_W_TWIPS*0.55)), yEmu:twipsToEmu(2600), cxEmu:twipsToEmu(3600), cyEmu:twipsToEmu(200), fill:p.accent, behind:true, relH:'page', relV:'page'});
+      return para(shapes,{spacing:{after:0}}) + spacer(3200) +
+        para(run('DETAILED PROJECT REPORT',{font:fh,sz:11,color:p.primary,caps:true,spacing:80}),{align:'center',spacing:{after:80}})+
+        para(run(data.title,bigTitleDark),{align:'center',spacing:{after:60}})+
+        para(run(data.sub,subDark),{align:'center',spacing:{after:400}})+
+        spacer(3200)+
+        infoBlock(p.dark)+
+        `<w:p><w:r><w:br w:type="page"/></w:r></w:p>`;
+    }
+    case 'triangleburst':{
+      const shapes =
+        shapeAnchor({prst:'rtTriangle', xEmu:0, yEmu:0, cxEmu:twipsToEmu(Math.round(PAGE_W_TWIPS*0.55)), cyEmu:twipsToEmu(4200), fill:p.primary, behind:true, relH:'page', relV:'page'})+
+        shapeAnchor({prst:'triangle', xEmu:twipsToEmu(Math.round(PAGE_W_TWIPS*0.45)), yEmu:0, cxEmu:twipsToEmu(Math.round(PAGE_W_TWIPS*0.55)), cyEmu:twipsToEmu(2600), fill:p.accent, behind:true, relH:'page', relV:'page', rot:10800000});
+      return para(shapes,{spacing:{after:0}})+spacer(3400)+
+        para(run('DETAILED PROJECT REPORT',{font:fh,sz:11,color:p.primary,caps:true,spacing:80}),{align:'center',spacing:{after:80}})+
+        para(run(data.title,bigTitleDark),{align:'center',spacing:{after:60}})+
+        para(run(data.sub,subDark),{align:'center',spacing:{after:400}})+
+        infoBlock(p.dark)+
+        `<w:p><w:r><w:br w:type="page"/></w:r></w:p>`;
+    }
+    case 'geopattern':{
+      const shapes =
+        shapeAnchor({prst:'hexagon', xEmu:twipsToEmu(500), yEmu:twipsToEmu(1200), cxEmu:twipsToEmu(1200), cyEmu:twipsToEmu(1200), fill:p.primary, behind:true, relH:'page', relV:'page'})+
+        shapeAnchor({prst:'hexagon', xEmu:twipsToEmu(1400), yEmu:twipsToEmu(600), cxEmu:twipsToEmu(900), cyEmu:twipsToEmu(900), fill:p.accent, behind:true, relH:'page', relV:'page'})+
+        shapeAnchor({prst:'diamond', xEmu:twipsToEmu(9600), yEmu:twipsToEmu(1200), cxEmu:twipsToEmu(1600), cyEmu:twipsToEmu(1600), fill:p.dark, behind:true, relH:'page', relV:'page'})+
+        shapeAnchor({prst:'ellipse', xEmu:twipsToEmu(300), yEmu:twipsToEmu(14000), cxEmu:twipsToEmu(2200), cyEmu:twipsToEmu(2200), fill:p.accent2, behind:true, relH:'page', relV:'page'})+
+        shapeAnchor({prst:'rect', xEmu:twipsToEmu(9000), yEmu:twipsToEmu(15000), cxEmu:twipsToEmu(2600), cyEmu:twipsToEmu(400), fill:p.primary, behind:true, relH:'page', relV:'page'});
+      return para(shapes,{spacing:{after:0}})+spacer(4200)+
+        para(run('DETAILED PROJECT REPORT',{font:fh,sz:11,color:p.primary,caps:true,spacing:80}),{align:'center',spacing:{after:80}})+
+        para(run(data.title,bigTitleDark),{align:'center',spacing:{after:60}})+
+        para(run(data.sub,subDark),{align:'center',spacing:{after:400}})+
+        infoBlock(p.dark)+
+        `<w:p><w:r><w:br w:type="page"/></w:r></w:p>`;
+    }
+    case 'arcbottom':{
+      const shape = shapeAnchor({prst:'ellipse', xEmu:twipsToEmu(-3000), yEmu:twipsToEmu(12500), cxEmu:twipsToEmu(PAGE_W_TWIPS+6000), cyEmu:twipsToEmu(6000), fill:p.primary, behind:true, relH:'page', relV:'page'});
+      const shape2 = shapeAnchor({prst:'ellipse', xEmu:twipsToEmu(-3000), yEmu:twipsToEmu(12200), cxEmu:twipsToEmu(PAGE_W_TWIPS+6000), cyEmu:twipsToEmu(400), fill:p.accent, behind:true, relH:'page', relV:'page'});
+      return para(shape+shape2,{spacing:{after:0}})+spacer(2400)+
+        para(run('DETAILED PROJECT REPORT',{font:fh,sz:11,color:p.primary,caps:true,spacing:80}),{align:'center',spacing:{after:80}})+
+        para(run(data.title,bigTitleDark),{align:'center',spacing:{after:60}})+
+        para(run(data.sub,subDark),{align:'center',spacing:{after:400}})+
+        spacer(3200)+
+        `<w:p>${pPr({align:'center'})}${run(data.co,{font:fh,sz:13,color:p.onPrimary,b:true})}</w:p>`+
+        `<w:p>${pPr({align:'center'})}${run(data.loc,{font:fb,sz:11,color:p.onPrimary})}</w:p>`+
+        `<w:p>${pPr({align:'center'})}${run('Prepared by '+data.by,{font:fb,sz:10,color:p.onPrimary})}</w:p>`+
+        `<w:p><w:r><w:br w:type="page"/></w:r></w:p>`;
+    }
+    case 'halfcircle':{
+      // Half circles pushed further off-page so text zone stays clear
+      const shape = shapeAnchor({prst:'ellipse', xEmu:twipsToEmu(-6000), yEmu:twipsToEmu(1500), cxEmu:twipsToEmu(7000), cyEmu:twipsToEmu(7000), fill:p.primary, behind:true, relH:'page', relV:'page'});
+      const shape2 = shapeAnchor({prst:'ellipse', xEmu:twipsToEmu(PAGE_W_TWIPS-1500), yEmu:twipsToEmu(12500), cxEmu:twipsToEmu(6500), cyEmu:twipsToEmu(6500), fill:p.accent, behind:true, relH:'page', relV:'page'});
+      return para(shape+shape2,{spacing:{after:0}})+spacer(4200)+
+        para(run('DETAILED PROJECT REPORT',{font:fh,sz:11,color:p.primary,caps:true,spacing:80}),{align:'center',spacing:{after:80}})+
+        para(run(data.title,bigTitleDark),{align:'center',spacing:{after:60}})+
+        para(run(data.sub,subDark),{align:'center',spacing:{after:400}})+
+        spacer(2000)+
+        infoBlock(p.dark)+
+        `<w:p><w:r><w:br w:type="page"/></w:r></w:p>`;
+    }
+    case 'chevronstack':{
+      let shapes='';
+      for(let i=0;i<5;i++){
+        shapes += shapeAnchor({prst:'chevron', xEmu:twipsToEmu(300+i*300), yEmu:twipsToEmu(1000+i*600), cxEmu:twipsToEmu(3400-i*500), cyEmu:twipsToEmu(500), fill: i%2? p.accent : p.primary, behind:true, relH:'page', relV:'page'});
+      }
+      return para(shapes,{spacing:{after:0}})+spacer(5000)+
+        para(run('DETAILED PROJECT REPORT',{font:fh,sz:11,color:p.primary,caps:true,spacing:80}),{align:'right',spacing:{after:80},ind:{right:400}})+
+        para(run(data.title,bigTitleDark),{align:'right',spacing:{after:60},ind:{right:400}})+
+        para(run(data.sub,subDark),{align:'right',spacing:{after:400},ind:{right:400}})+
+        spacer(2400)+infoBlock(p.dark)+`<w:p><w:r><w:br w:type="page"/></w:r></w:p>`;
+    }
+    case 'twotone':{
+      // Full-width shaded table cells for top and bottom bands, text lives inside
+      const topBand = table([row([cell(
+        para(run('DETAILED PROJECT REPORT',{font:fh,sz:11,color:p.onPrimary,caps:true,spacing:80}),{align:'center',spacing:{after:80}})+
+        para(run(data.title,bigTitle),{align:'center',spacing:{after:60}})+
+        para(run(data.sub,sub),{align:'center',spacing:{after:0}}),
+        {shd:p.primary,borders:null,margins:{top:600,bottom:600,left:300,right:300}}
+      )])],{w:5000,wType:'pct',grid:[CW]});
+      const bottomBand = table([row([cell(
+        para(run(data.co,{font:fh,sz:13,color:p.onAccent,b:true}),{align:'center',spacing:{after:40}})+
+        para(run(data.loc,{font:fb,sz:11,color:p.onAccent}),{align:'center',spacing:{after:20}})+
+        para(run(data.scheme,{font:fb,sz:10.5,color:p.onAccent,i:true}),{align:'center',spacing:{after:40}})+
+        para(run('Prepared by '+data.by,{font:fb,sz:10,color:p.onAccent}),{align:'center',spacing:{after:0}}),
+        {shd:p.accent,borders:null,margins:{top:400,bottom:400,left:300,right:300}}
+      )])],{w:5000,wType:'pct',grid:[CW]});
+      return topBand + spacer(5800) + bottomBand + `<w:p><w:r><w:br w:type="page"/></w:r></w:p>`;
+    }
+    case 'hexcluster':{
+      let shapes='';
+      const cx=twipsToEmu(9200), cy=twipsToEmu(2400);
+      for(let i=0;i<7;i++){
+        const angle = i*60*Math.PI/180;
+        shapes += shapeAnchor({prst:'hexagon', xEmu:cx+Math.round(Math.cos(angle)*twipsToEmu(900))-twipsToEmu(400), yEmu:cy+Math.round(Math.sin(angle)*twipsToEmu(900))-twipsToEmu(400), cxEmu:twipsToEmu(800), cyEmu:twipsToEmu(800), fill: i%2? p.accent : p.primary, behind:true, relH:'page', relV:'page'});
+      }
+      return para(shapes,{spacing:{after:0}})+spacer(4400)+
+        para(run('DETAILED PROJECT REPORT',{font:fh,sz:11,color:p.primary,caps:true,spacing:80}),{align:'left',spacing:{after:80},ind:{left:400}})+
+        para(run(data.title,bigTitleDark),{align:'left',spacing:{after:60},ind:{left:400}})+
+        para(run(data.sub,subDark),{align:'left',spacing:{after:400},ind:{left:400}})+
+        spacer(3200)+infoBlock(p.dark)+`<w:p><w:r><w:br w:type="page"/></w:r></w:p>`;
+    }
+    default:
+      return wCover(Object.assign({},skin,{cover:'topblock'}), data);
+  }
+}
+
+/* chapter divider full-page tile */
+function wDivider(skin, n, title){
+  const p=skin.pal,fh=skin.typ.head;
+  const spacer=(h)=>table([row([cell(para(''),{borders:null})],{h,hRule:'exact'})],{w:5000,wType:'pct',grid:[CW]});
+  return `<w:p><w:r><w:br w:type="page"/></w:r></w:p>`+
+    spacer(3000)+
+    table([row([cell(
+      para(run('CHAPTER '+n,{font:fh,sz:12,color:p.onPrimary,caps:true,spacing:80}),{align:'center',spacing:{after:120}})+
+      para(run(title,{font:fh,sz:24,color:p.onPrimary,b:true,caps:skin.caps}),{align:'center',spacing:{after:0}}),
+      {shd:p.primary,borders:null,margins:{top:400,bottom:400,left:300,right:300}}
+    )])],{w:5000,wType:'pct',grid:[CW]})+
+    table([row([cell(para(''),{shd:p.accent,borders:null})],{h:60,hRule:'exact'})],{w:5000,wType:'pct',grid:[CW]})+
+    `<w:p><w:r><w:br w:type="page"/></w:r></w:p>`;
+}
+
+/* full document.xml */
+function buildDocumentXml(skin, data){
+  const chapters=(data.chapters||'').split('\n').map(s=>s.trim()).filter(Boolean);
+  const cover = wCover(skin, data);
+  const tocPage =
+    para(run('TABLE OF CONTENTS',{font:skin.typ.head,sz:16,color:skin.pal.primary,b:true,caps:true,spacing:60}),{align:'center',spacing:{after:200},borders:{bottom:{val:'single',sz:12,color:skin.pal.primary}}})+
+    para(fld('TOC \\o "1-2" \\h \\z \\u',{font:skin.typ.body,sz:11,color:skin.pal.ink}),{spacing:{after:0}})+
+    `<w:p><w:r><w:br w:type="page"/></w:r></w:p>`;
+
+  let body='';
+  chapters.forEach((title,i)=>{
+    const n=i+1;
+    if(skin.dividers) body += wDivider(skin,n,title);
+    body += wHeading(skin,n,title);
+    body += wSubheading(skin,`${n}.1 Overview`);
+    body += wPara(skin,`This chapter presents the ${title.toLowerCase()} for the proposed facility of ${data.co} at ${data.loc}. The narrative follows the applicable scheme guidelines and supports the numbers that follow in later chapters.`);
+    body += wPara(skin,`Where figures are presented, they are drawn from the applicant's records and from published sector sources cited alongside. Assumptions are stated so that they can be tested independently.`);
+    if(n===12){
+      body += wSubheading(skin,`${n}.2 Estimated project cost`);
+      body += wPara(skin,`The estimated project cost is presented below with basic cost, GST and total value against each head. The totals reconcile with the means of finance table in the next section.`);
+      body += wCostTable(skin);
+      body += wCaption(skin,'Table 1: Estimated project cost | Source: Estimates');
+    } else {
+      body += wSubheading(skin,`${n}.2 Detail`);
+      body += wPara(skin,`Placeholder narrative for ${title.toLowerCase()}. Replace this with the substantive discussion when the draft is filled in.`);
+      body += wCostTable(skin);
+      body += wCaption(skin,`Table ${n}.1: Illustrative data | Source: Estimates`);
+    }
+    if(i<chapters.length-1) body += `<w:p><w:r><w:br w:type="page"/></w:r></w:p>`;
+  });
+
+  const pgBorder = skin.pageBorder
+    ? `<w:pgBorders w:offsetFrom="page"><w:top w:val="single" w:sz="6" w:space="20" w:color="${skin.pal.rule}"/><w:left w:val="single" w:sz="6" w:space="20" w:color="${skin.pal.rule}"/><w:bottom w:val="single" w:sz="6" w:space="20" w:color="${skin.pal.rule}"/><w:right w:val="single" w:sz="6" w:space="20" w:color="${skin.pal.rule}"/></w:pgBorders>`
+    : '';
+  const sectPr = `<w:sectPr>
+      <w:headerReference w:type="default" r:id="rId10"/>
+      <w:footerReference w:type="default" r:id="rId11"/>
+      <w:headerReference w:type="first" r:id="rId12"/>
+      <w:footerReference w:type="first" r:id="rId13"/>
+      <w:pgSz w:w="${PAGE_W_TWIPS}" w:h="16838"/>
+      <w:pgMar w:top="${PAGE_MARGIN_T}" w:right="${PAGE_MARGIN_R}" w:bottom="${PAGE_MARGIN_B}" w:left="${PAGE_MARGIN_L}" w:header="600" w:footer="600" w:gutter="0"/>
+      ${pgBorder}
+      <w:titlePg/>
+      <w:cols w:space="720"/>
+      <w:docGrid w:linePitch="360"/>
+    </w:sectPr>`;
+
+  return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
+            xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"
+            xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"
+            xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing"
+            xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:xml="http://www.w3.org/XML/1998/namespace">
+<w:body>${cover}${tocPage}${body}${sectPr}</w:body></w:document>`;
+}
+
+function buildHeaderXml(inner){
+  return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<w:hdr xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
+       xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"
+       xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"
+       xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing"
+       xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"
+       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006">
+${inner}</w:hdr>`;
+}
+function buildFooterXml(inner){
+  return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<w:ftr xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
+       xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"
+       xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"
+       xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing"
+       xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"
+       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006">
+${inner}</w:ftr>`;
+}
+
+/* ---------- assemble the .docx package ---------- */
+function buildDocx(skin, data){
+  __SHAPE_ID = 0;
+  const enc=(s)=>strBytes(s);
+  const CT = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">
+<Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>
+<Default Extension="xml" ContentType="application/xml"/>
+<Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/>
+<Override PartName="/word/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml"/>
+<Override PartName="/word/settings.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.settings+xml"/>
+<Override PartName="/word/fontTable.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.fontTable+xml"/>
+<Override PartName="/word/numbering.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.numbering+xml"/>
+<Override PartName="/word/header1.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.header+xml"/>
+<Override PartName="/word/header2.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.header+xml"/>
+<Override PartName="/word/footer1.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.footer+xml"/>
+<Override PartName="/word/footer2.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.footer+xml"/>
+<Override PartName="/docProps/core.xml" ContentType="application/vnd.openxmlformats-package.core-properties+xml"/>
+<Override PartName="/docProps/app.xml" ContentType="application/vnd.openxmlformats-officedocument.extended-properties+xml"/>
+</Types>`;
+  const REL = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/>
+<Relationship Id="rId2" Type="http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties" Target="docProps/core.xml"/>
+<Relationship Id="rId3" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/extended-properties" Target="docProps/app.xml"/>
+</Relationships>`;
+  const DOCREL = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/>
+<Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/settings" Target="settings.xml"/>
+<Relationship Id="rId3" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/fontTable" Target="fontTable.xml"/>
+<Relationship Id="rId4" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/numbering" Target="numbering.xml"/>
+<Relationship Id="rId10" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/header" Target="header1.xml"/>
+<Relationship Id="rId11" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/footer" Target="footer1.xml"/>
+<Relationship Id="rId12" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/header" Target="header2.xml"/>
+<Relationship Id="rId13" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/footer" Target="footer2.xml"/>
+</Relationships>`;
+  const STYLES = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<w:styles xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+<w:docDefaults><w:rPrDefault><w:rPr><w:rFonts w:ascii="${skin.typ.body}" w:hAnsi="${skin.typ.body}" w:cs="${skin.typ.body}"/><w:sz w:val="${Math.round(skin.typ.bSz*2)}"/><w:szCs w:val="${Math.round(skin.typ.bSz*2)}"/><w:lang w:val="en-IN" w:eastAsia="en-IN" w:bidi="ar-SA"/></w:rPr></w:rPrDefault>
+<w:pPrDefault><w:pPr><w:spacing w:after="120" w:line="280" w:lineRule="auto"/></w:pPr></w:pPrDefault></w:docDefaults>
+<w:style w:type="paragraph" w:default="1" w:styleId="Normal"><w:name w:val="Normal"/><w:qFormat/></w:style>
+<w:style w:type="paragraph" w:styleId="Heading1"><w:name w:val="heading 1"/><w:basedOn w:val="Normal"/><w:next w:val="Normal"/><w:qFormat/><w:pPr><w:keepNext/><w:spacing w:before="240" w:after="120"/><w:outlineLvl w:val="0"/></w:pPr><w:rPr><w:rFonts w:ascii="${skin.typ.head}" w:hAnsi="${skin.typ.head}"/><w:b/><w:color w:val="${skin.pal.primary}"/><w:sz w:val="${Math.round(skin.typ.hSz*2)}"/></w:rPr></w:style>
+<w:style w:type="paragraph" w:styleId="Heading2"><w:name w:val="heading 2"/><w:basedOn w:val="Normal"/><w:next w:val="Normal"/><w:qFormat/><w:pPr><w:keepNext/><w:spacing w:before="180" w:after="60"/><w:outlineLvl w:val="1"/></w:pPr><w:rPr><w:rFonts w:ascii="${skin.typ.head}" w:hAnsi="${skin.typ.head}"/><w:b/><w:color w:val="${skin.pal.dark}"/><w:sz w:val="23"/></w:rPr></w:style>
+<w:style w:type="table" w:styleId="TableNormal"><w:name w:val="Normal Table"/><w:uiPriority w:val="99"/><w:semiHidden/><w:unhideWhenUsed/><w:tblPr><w:tblInd w:w="0" w:type="dxa"/><w:tblCellMar><w:top w:w="0" w:type="dxa"/><w:left w:w="108" w:type="dxa"/><w:bottom w:w="0" w:type="dxa"/><w:right w:w="108" w:type="dxa"/></w:tblCellMar></w:tblPr></w:style>
+</w:styles>`;
+  const SETTINGS = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<w:settings xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+<w:zoom w:percent="100"/><w:defaultTabStop w:val="720"/><w:updateFields w:val="true"/>
+<w:compat><w:compatSetting w:name="compatibilityMode" w:uri="http://schemas.microsoft.com/office/word" w:val="15"/></w:compat>
+</w:settings>`;
+  const FONTS = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<w:fonts xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+<w:font w:name="${skin.typ.body}"><w:panose1 w:val="020F0502020204030204"/><w:charset w:val="00"/><w:family w:val="swiss"/><w:pitch w:val="variable"/></w:font>
+<w:font w:name="${skin.typ.head}"><w:panose1 w:val="020F0502020204030204"/><w:charset w:val="00"/><w:family w:val="swiss"/><w:pitch w:val="variable"/></w:font>
+</w:fonts>`;
+  const NUM = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<w:numbering xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"/>`;
+  const APP = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Properties xmlns="http://schemas.openxmlformats.org/officeDocument/2006/extended-properties" xmlns:vt="http://schemas.openxmlformats.org/officeDocument/2006/docPropsVTypes"><Application>DPR Skin Studio</Application></Properties>`;
+  const CORE = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<cp:coreProperties xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<dc:title>${esc(data.title||'Detailed Project Report')}</dc:title>
+<dc:creator>${esc(data.by||'')}</dc:creator>
+<cp:lastModifiedBy>${esc(data.by||'')}</cp:lastModifiedBy>
+</cp:coreProperties>`;
+
+  const headerX = buildHeaderXml(wHeader(skin,data));
+  const footerX = buildFooterXml(wFooter(skin));
+  const blankHdr = buildHeaderXml(para(''));
+  const blankFtr = buildFooterXml(para(''));
+
+  const files=[
+    {name:'[Content_Types].xml', data:enc(CT)},
+    {name:'_rels/.rels',         data:enc(REL)},
+    {name:'word/_rels/document.xml.rels', data:enc(DOCREL)},
+    {name:'word/document.xml',   data:enc(buildDocumentXml(skin,data))},
+    {name:'word/styles.xml',     data:enc(STYLES)},
+    {name:'word/settings.xml',   data:enc(SETTINGS)},
+    {name:'word/fontTable.xml',  data:enc(FONTS)},
+    {name:'word/numbering.xml',  data:enc(NUM)},
+    {name:'word/header1.xml',    data:enc(headerX)},
+    {name:'word/footer1.xml',    data:enc(footerX)},
+    {name:'word/header2.xml',    data:enc(blankHdr)},
+    {name:'word/footer2.xml',    data:enc(blankFtr)},
+    {name:'docProps/app.xml',    data:enc(APP)},
+    {name:'docProps/core.xml',   data:enc(CORE)}
+  ];
+  return zipStore(files);
+}
+
+function downloadDocx(skin, data){
+  const bytes = buildDocx(skin, data);
+  const blob = new Blob([bytes], {type:'application/vnd.openxmlformats-officedocument.wordprocessingml.document'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  const safe = (skin.name+'_'+skin.seed).replace(/[^A-Za-z0-9_-]+/g,'_');
+  a.href=url; a.download=`DPR_${safe}.docx`;
+  document.body.appendChild(a); a.click();
+  setTimeout(()=>{URL.revokeObjectURL(url); a.remove()},400);
+}
+/* ============================================================
+   PART 4 — UI wiring
+   ============================================================ */
+const SEL = (id)=>document.getElementById(id);
+function opts(sel, list, extraFirst){
+  sel.innerHTML='';
+  if(extraFirst){
+    const o=document.createElement('option');o.value='auto';o.textContent=extraFirst;sel.appendChild(o);
+  }
+  list.forEach(x=>{const o=document.createElement('option');o.value=x.id;o.textContent=x.label;sel.appendChild(o)});
+}
+opts(SEL('f_pal'), PALETTE_FAMILIES, 'Automatic (random)');
+opts(SEL('f_hdr'), HEADER_STYLES,    'Automatic (random)');
+opts(SEL('f_tbl'), TABLE_STYLES,     'Automatic (random)');
+opts(SEL('f_hd'),  HEADING_STYLES,   'Automatic (random)');
+opts(SEL('f_ftr'), FOOTER_STYLES,    'Automatic (random)');
+opts(SEL('f_cov'), COVER_STYLES,     'Automatic (random)');
+opts(SEL('f_typ'), TYPE_PAIRS,       'Automatic (random)');
+
+let SKINS = [];
+
+function collectData(){
+  return {
+    title:  SEL('f_title').value.trim(),
+    sub:    SEL('f_sub').value.trim(),
+    co:     SEL('f_co').value.trim(),
+    loc:    SEL('f_loc').value.trim(),
+    scheme: SEL('f_scheme').value.trim(),
+    by:     SEL('f_by').value.trim(),
+    date:   SEL('f_date').value.trim(),
+    short:  SEL('f_short').value.trim(),
+    chapters: SEL('f_chapters').value
+  };
+}
+function collectOpts(){
+  return {
+    palette: SEL('f_pal').value,
+    header:  SEL('f_hdr').value,
+    footer:  SEL('f_ftr').value,
+    heading: SEL('f_hd').value,
+    table:   SEL('f_tbl').value,
+    cover:   SEL('f_cov').value,
+    type:    SEL('f_typ').value,
+    boldAccent: SEL('f_boldmix').checked,
+    pageBorder: SEL('f_border').checked,
+    dividers:   SEL('f_divider').checked
+  };
+}
+function seedOf(){
+  const raw=SEL('f_seed').value.trim();
+  if(raw) return parseInt(raw,10)>>>0;
+  return Math.floor(Math.random()*4294967295)>>>0;
+}
+
+function renderCards(){
+  const box=SEL('cards'); box.innerHTML='';
+  const d = collectData();
+  SKINS.forEach((s,idx)=>{
+    const el=document.createElement('div'); el.className='card';
+    el.innerHTML = `
+      <div class="meta">
+        <div class="nm">${escapeHtml(s.name)}</div>
+        <div class="sd">seed ${s.seed}</div>
+      </div>
+      <div class="swatches">
+        ${['primary','dark','accent','soft','rule','ink'].map(k=>`<span class="sw" title="${k} #${s.pal[k]}" style="background:#${s.pal[k]}"></span>`).join('')}
+      </div>
+      <div class="pv">${previewPage(s,d)}</div>
+      <div class="tags">
+        <span class="tag">${escapeHtml(s.labels.palette)}</span>
+        <span class="tag">Header: ${escapeHtml(s.labels.header)}</span>
+        <span class="tag">Heading: ${escapeHtml(s.labels.heading)}</span>
+        <span class="tag">Table: ${escapeHtml(s.labels.table)}</span>
+        <span class="tag">Footer: ${escapeHtml(s.labels.footer)}</span>
+        <span class="tag">Cover: ${escapeHtml(s.labels.cover)}</span>
+        <span class="tag">${escapeHtml(s.labels.type)}</span>
+      </div>
+      <div class="foot">
+        <button class="primary" data-i="${idx}" data-act="dl">Download .docx</button>
+        <button class="ghost" data-i="${idx}" data-act="regen">Regenerate</button>
+        <button class="ghost" data-i="${idx}" data-act="lock">Use this seed</button>
+      </div>`;
+    box.appendChild(el);
+  });
+  box.querySelectorAll('button[data-act]').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const i=+btn.dataset.i, act=btn.dataset.act, s=SKINS[i];
+      if(act==='dl') downloadDocx(s, collectData());
+      if(act==='regen'){ SKINS[i]=makeSkin(Object.assign({seed:(Math.random()*4294967295)>>>0},collectOpts())); renderCards(); }
+      if(act==='lock'){ SEL('f_seed').value=s.seed; SEL('status').textContent='Seed '+s.seed+' locked. Regenerate to reuse.'; }
+    });
+  });
+}
+
+function generateN(n){
+  const o=collectOpts();
+  const seedRoot=seedOf();
+  const rng=makeRng(seedRoot);
+  const arr=[];
+  for(let i=0;i<n;i++){
+    arr.push(makeSkin(Object.assign({seed:(rng.next()*4294967295)>>>0}, o)));
+  }
+  return arr;
+}
+
+SEL('btnGen').addEventListener('click',()=>{
+  SEL('status').textContent='Generating…';
+  const n=parseInt(SEL('f_n').value,10);
+  SKINS = generateN(n);
+  renderCards();
+  SEL('status').textContent = `${SKINS.length} designs generated. Click any card to download that .docx.`;
+});
+SEL('btnMore').addEventListener('click',()=>{
+  SKINS = SKINS.concat(generateN(5));
+  renderCards();
+  SEL('status').textContent = `${SKINS.length} designs on the shelf.`;
+});
+SEL('btnClear').addEventListener('click',()=>{ SKINS=[]; renderCards(); SEL('status').textContent=''; });
+
+/* prime one so the user sees something without clicking */
+SKINS = generateN(5);
+renderCards();
+SEL('status').textContent = `5 designs generated. Click Generate to reshuffle.`;
+</script></body></html>
